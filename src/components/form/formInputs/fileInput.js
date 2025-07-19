@@ -74,7 +74,7 @@ const FileInput = memo((props) => {
     useEffect(() => {
         // Ensure all dependencies are valid
         if (!value || !updateImage || !imageFormik || !formik || !name) return;
-
+    
         // Handle image updates
         const handleImageUpdate = async () => {
             try {
@@ -92,9 +92,14 @@ const FileInput = memo((props) => {
                 console.error('Error updating image:', error);
             }
         };
-
+    
         handleImageUpdate();
-    }, [value, updateImage]); // Removed unnecessary dependencies to prevent re-renders
+    
+        // Cleanup function to avoid memory leaks
+        return () => {
+            // Cancel any ongoing asynchronous operations if needed
+        };
+    }, [value, updateImage, name]);
 
     return (
         <div className='row'>

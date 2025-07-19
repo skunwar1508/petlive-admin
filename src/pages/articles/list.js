@@ -47,7 +47,7 @@ function List() {
     if (articleStatus) {
       postData.articleStatus = articleStatus;
     }
-
+  
     common.loader(true);
     await authAxios({
       method: 'POST',
@@ -82,7 +82,7 @@ function List() {
         activePage: pageNumber || 1,
         list: [],
       });
-
+      
       const filters = common.getArticleFilter()
       const queryString = new URLSearchParams(filters).toString();
       navigate(`/articles/list/${pageNumber}?${queryString}`);
@@ -139,79 +139,75 @@ function List() {
                   </thead>
                   <tbody>
                     {
-                      paginData?.list?.map((data, key) => (
-                        <React.Fragment key={key}>
-                          <tr>
-                            <td>
-                              {(Number(page) == 1 ? 0 : (Number(page) - 1) * paginData.itemsCountPerPage) + key + 1}
-                            </td>
-                            <td>{data?.articleId}</td>
-                            <td>{data?.authName}</td>
-                            <td>{data?.title}</td>
-                            <td>
-                              <ReactConfirm
-                                type="dropdown"
-                                reasonAllow={true}
-                                value={data?.articleStatus}
-                                route={`/article/status/${data?._id}`}
-                                action={() => getData()}
-                                message='Are you sure you want to change the profile status?'
-                                method="PUT"
-                                options={[
-                                  { label: 'Pending', value: 'pending' },
-                                  { label: 'Approve', value: 'approved' },
-                                  { label: 'Reject', value: 'rejected' },
-                                ]}
-                              />
-                            </td>
-                            <td className="text-right">
-                              <button
-                                className="btn btn-info"
-                                onClick={(e) => {
-                                  e.stopPropagation(); // Prevent row click from triggering
-                                  toggleRow(data._id);
+                    paginData?.list?.map((data, key) => (
+                      <React.Fragment key={key}>
+                        <tr>
+                          <td>
+                            {(Number(page) == 1 ? 0 : (Number(page) - 1) * paginData.itemsCountPerPage) + key + 1}
+                          </td>
+                          <td>{data?.articleId}</td>
+                          <td>{data?.authName}</td>
+                          <td>{data?.title}</td>
+                          <td>
+                            <ReactConfirm
+                              type="dropdown"
+                              value={data?.articleStatus}
+                              route={`/article/status/${data?._id}`}
+                              action={() => getData()}
+                              message='Are you sure you want to change the profile status?'
+                              method="PUT"
+                              options={[
+                                {label:'Pending', value: 'pending' },
+                                {label:'Approve', value: 'approved' },
+                                {label:'Reject', value: 'rejected' },
+                              ]}
+                            />
+                          </td>
+                          <td className="text-right">
+                            <button
+                              className="btn btn-info"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent row click from triggering
+                                toggleRow(data._id);
                                 }}
                               >
                                 {expandedRows.includes(data._id) ? 'Hide' : 'View'}
                               </button>
-                            </td>
-                          </tr>
-                          {expandedRows.includes(data._id) && (
-                            <tr>
+                              </td>
+                            </tr>
+                            {expandedRows.includes(data._id) && (
+                              <tr>
                               <td colSpan="8">
                                 <div className="expanded-row">
-                                  <div className="row">
-                                    <div className="col-md-12">
-                                      <h4 className="section-title">Article Details</h4>
-                                      <div className='row'>
-                                        <div className="col-md-2">
-                                          <img src={data?.file?.path || '/assets/images/default-image.png'} alt="Profile Photo" className="card-photo img-fluid" />
-                                        </div>
-                                        <div className='col-md-10'>
-                                          <ul className="details-list mt-3">
-                                            <li>
-                                              <strong>Title:</strong> {data?.title}
-                                            </li>
-                                            <li>
-                                              <strong>Category:</strong> {data?.category?.name}
-                                            </li>
-                                            <li>
-                                              <strong>Description:</strong> {data?.content}
-                                            </li>
-                                            <li>
-                                              <strong>Created At:</strong> <Moment format="MMM DD, YYYY">{data?.createdAt}</Moment>
-                                            </li>
-                                          </ul>
-                                        </div>
+                                <div className="row">
+                                  <div className="col-md-12">
+                                    <h4 className="section-title">Article Details</h4>
+                                    <div className='row'>
+                                      <div className="col-md-2">
+                                        <img src={data?.file?.path || '/assets/images/default-image.png'} alt="Profile Photo" className="card-photo img-fluid" />
+                                      </div>
+                                      <div className='col-md-10'>
+                                        <ul className="details-list mt-3">
+                                          <li>
+                                            <strong>Title:</strong> {data?.title}
+                                          </li>
+                                          <li>
+                                            <strong>Description:</strong> {data?.content}
+                                          </li>
+                                          <li>
+                                            <strong>Created At:</strong> <Moment format="MMM DD, YYYY">{data?.createdAt}</Moment>
+                                          </li>
+                                        </ul>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </td>
-                            </tr>
-                          )}
-                        </React.Fragment>
-                      ))}
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
+                    ))}
                   </tbody>
                 </table>
               </div>

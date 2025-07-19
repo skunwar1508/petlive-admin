@@ -11,16 +11,19 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 
+const Dashboard = React.lazy(() => import("../pages/dashboard"));
+const ChangePassword = React.lazy(() => import("../pages/change-password"));
+const ProvidersList = React.lazy(() => import("../pages/providers/list"));
+const ProvidersAdd = React.lazy(() => import("../pages/providers/add"));
+const PatientsList = React.lazy(() => import("../pages/patients/list"));
+const PatientsAdd = React.lazy(() => import("../pages/patients/add"));
 
-const routes = [
-	{ path: "/", element: React.lazy(() => import("../pages/dashboard")) },
-	{ path: "/dashboard", element: React.lazy(() => import("../pages/dashboard")) },
-	{ path: "/change-password", element: React.lazy(() => import("../pages/change-password")) },
-	{ path: "/providers/list/:page", element: React.lazy(() => import("../pages/providers/list")) },
-]
+const ServicesList = React.lazy(() => import("../pages/services/list"));
+const ServicesAdd = React.lazy(() => import("../pages/services/add"));
+
 function Layout() {
 	const context = useContext(UserContext);
-
+	
 
 	return (
 		<div
@@ -40,9 +43,20 @@ function Layout() {
 					<div className="container-fluid">
 						<Suspense fallback={<PageLoader />}>
 							<Routes>
-								{routes.map((route, index) => (
-									<Route key={index} path={route.path} element={<route.element />} />
-								))}
+								<Route path="/" element={<Dashboard />} />
+								<Route path="/dashboard" element={<Dashboard />} />
+								<Route path="/change-password" element={<ChangePassword />} />
+								<Route path="/doctor/list/:page" element={<ProvidersList />} />
+								<Route path="/doctor/add" element={<ProvidersAdd />} />
+								<Route path="/doctor/edit/:id" element={<ProvidersAdd />} />
+
+								<Route path="/patients/list/:page" element={<PatientsList />} />
+								<Route path="/patients/add" element={<PatientsAdd />} />
+								<Route path="/patients/edit/:id" element={<PatientsAdd />} />
+
+								<Route path="/services/list/:page" element={<ServicesList />} />
+								<Route path="/services/add" element={<ServicesAdd />} />
+								<Route path="/services/edit/:id" element={<ServicesAdd />} />
 
 								<Route path="*" element={<NotFound />} />
 							</Routes>

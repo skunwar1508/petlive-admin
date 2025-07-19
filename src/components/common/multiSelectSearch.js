@@ -1,128 +1,95 @@
-import React, { useEffect, useState } from 'react';
-import AsyncSelect from 'react-select/async';
+import React, { useEffect, useState } from 'react'
+import Select, { components } from 'react-select';
+import makeAnimated from 'react-select/animated';
+import { toast } from 'react-toastify';
+import apiFunc from '../../services/api';
+import ROOT_URL from '../../services/api-url';
 import authAxios from '../../services/authAxios';
 import common from '../../services/common';
-import PropTypes from 'prop-types';
+import AsyncSelect from 'react-select/async';
 
-const ReusableAsyncSelect = ({
-    apiEndpoint,
-    requestPayload = {},
-    mapResponseToOptions,
-    value,
-    onBlur,
-    onChange,
-    defaultOptions = true,
-    getOptionLabel = (e) => e.label,
-    getOptionValue = (e) => e.value,
-}) => {
-    const [options, setOptions] = useState([]);
-    const [currentValue, setCurrentValue] = useState([]);
+const SelectMultipleExam = (props) => {
+    const [options, setOptions] = useState([])
+    const [selected, setSelected] = useState([])
+    
+    const{value, onBlur, onChange, remove,category} = props;
+    const { Option } = components;
+    const getTags = (e) => {
+    let values= e || 'a'
+        let postValue = {
+            searchString:values,
+            categoryId: "621c547d131904275230b501" || '',
+             
+        }
+        return apiFunc.searchExam(postValue).then((res)=>{
+            let resData = res?.data?.data;
+                resData = resData?.map((data)=>{
+                let firRes = {
+                    label:data?.name,
+                    value:data._id,
+                    examId: data.examId,
+                    
+                };
+                return firRes
+            })
+            // console.log(resData)
+            setOptions(resData);
 
-    const fetchOptions = async (searchString) => {
-        try {
-            const payload = { ...requestPayload, searchString };
-            const res = await authAxios.post(apiEndpoint, payload);
-            const resData = res?.data?.data || [];
-            const mappedOptions = mapResponseToOptions
-                ? mapResponseToOptions(resData)
-                : resData.map((item) => ({
-                        label: item.name,
-                        value: item._id,
-                    }));
-            setOptions(mappedOptions);
-            return mappedOptions;
-        } catch (error) {
-            console.error(error);
+            return resData;
+        }).catch((error) => {
             common.error(error);
-            return [];
-        }
+        })
+
+        
+    }
+    const loadOptions = (value, callback) => {
+          
+       
+      
+                getTags(value).then((res)=>{
+                    // console.log(res)
+                  
+                    callback(res);
+                })
+            
+            
+     
     };
+    const handleChange = (e) => {
+         onChange(e);
+        // setOptions(value);
+    }
+    // const IconOption = props => (
+    //     <Option {...props}>
+    //       <span className='qsnNotype'>{props.data.questId} </span>  
+    //       {props.data.label}
+    //     </Option>
+    // );
+  return (
+    <>
+        {value && value.map((data, key)=>(
+            <div className="row mb-2" key={key}>
+                <div className="col-9">
+                <input type="text" readOnly value={data.label}  className="form-control" />
+                </div>
+                <div className="col-3">
+                    <button type="button" onClick={()=> remove(key)} className="trash">
+                        <span></span> <i></i>
+                    </button>
+                </div>
+            </div>
+        ))}
+        <AsyncSelect
+            defaultOptions
+            value={selected}
+            getOptionLabel={e => e.label}
+            getOptionValue={e => e._id}
+           loadOptions={loadOptions}
+            onBlur={(e)=>onBlur(e)} onChange={(e)=>handleChange(e)}
+            // components={{ Option: IconOption }}
+      />
+    </>
+  )
+}
 
-    const loadOptions = (inputValue, callback) => {
-        fetchOptions(inputValue).then(callback);
-    };
-
-    const handleChange = (selectedOption) => {
-        setCurrentValue(selectedOption);
-        onChange(selectedOption);
-    };
-
-    useEffect(() => {
-        if (value) {
-            const selectedOption = options.filter((option) => option.value === value);
-            setCurrentValue(selectedOption);
-        } else {
-            setCurrentValue(null);
-        }
-    }, [value, options]);
-
-
-
-    return (
-        <div className="reusable-async-select" style={{ margin: '10px 0', position: 'relative', minWidth: '100px' }}>
-            <AsyncSelect
-                classNamePrefix="async-select"
-                styles={{
-                    control: (base) => ({
-                        ...base,
-                        borderColor: '#ccc',
-                        boxShadow: 'none',
-                        fontSize: '12px', // Reduced font size
-                        width: '200px', // Added min width
-                        '&:hover': { borderColor: '#888' },
-                    }),
-                    menu: (base) => ({
-                        ...base,
-                        zIndex: 5,
-                        fontSize: '12px', // Reduced font size
-                    }),
-                    option: (base, state) => ({
-                        ...base,
-                        backgroundColor: state.isFocused ? '#f0f0f0' : '#fff',
-                        color: '#333',
-                        fontSize: '12px', // Reduced font size
-                        '&:active': { backgroundColor: '#ddd' },
-                    }),
-                }}
-                defaultOptions={defaultOptions}
-                value={currentValue}
-                getOptionLabel={getOptionLabel}
-                getOptionValue={getOptionValue}
-                loadOptions={loadOptions}
-                onBlur={onBlur}
-                onChange={handleChange}
-            />
-        </div>
-    );
-};
-
-
-ReusableAsyncSelect.defaultProps = {
-    ...ReusableAsyncSelect.defaultProps,
-};
-
-
-ReusableAsyncSelect.propTypes = {
-    apiEndpoint: PropTypes.string.isRequired,
-    requestPayload: PropTypes.object,
-    mapResponseToOptions: PropTypes.func,
-    value: PropTypes.object,
-    onBlur: PropTypes.func,
-    value: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    defaultOptions: PropTypes.bool,
-    getOptionLabel: PropTypes.func,
-    getOptionValue: PropTypes.func,
-};
-
-ReusableAsyncSelect.defaultProps = {
-    requestPayload: {},
-    mapResponseToOptions: null,
-    value: null,
-    onBlur: () => {},
-    defaultOptions: true,
-    getOptionLabel: (e) => e.label,
-    getOptionValue: (e) => e.value,
-};
-ReusableAsyncSelect.displayName = 'ReusableAsyncSelect';
-
-export default ReusableAsyncSelect;
+export default SelectMultipleExam

@@ -125,7 +125,7 @@ function List() {
                     <option value="true">Active</option>
                     <option value="false">In Active</option>
                   </select>
-                  {/* <select value={currentProvider} className="form-select form-select-sm" onChange={(e) => {
+                  <select value={currentProvider} className="form-select form-select-sm" onChange={(e) => {
                     let search = common.getPatientFilter();
                     search.page = 1;
                     search.currentProvider = e.target.value;
@@ -136,7 +136,8 @@ function List() {
                     {providerList?.map((item) => (
                       <option key={item?._id} value={item?._id}>{item?.title}</option>
                     ))}
-                  </select> */}
+                  </select>
+                  {/* <Link to={`/patients/add`} className="btn-custom btn-theme">Add</Link> */}
                 </div>
               </div>
             </div>

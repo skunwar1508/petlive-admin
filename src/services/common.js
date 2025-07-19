@@ -281,38 +281,6 @@ const common = {
     newPostData.searchString = searchString || "";
     return newPostData;
   },
-  getFilterFlag: () => {
-    const params = new URLSearchParams(window.location.search);
-    let page = params.get("page");
-    let searchString = params.get("searchString");
-    let communityId = params.get("communityId");
-    let communityPostId = params.get("communityPostId");
-    let flaggedBy = params.get("flaggedBy");
-    let flaggedByRole = params.get("flaggedByRole");
-    let newPostData = {};
-    newPostData.page = page || 1;
-    newPostData.perPage = common.perPageData();
-    newPostData.searchString = searchString || "";
-    newPostData.communityId = communityId || "";
-    newPostData.communityPostId = communityPostId || "";
-    newPostData.flaggedBy = flaggedBy || "";
-    newPostData.flaggedByRole = flaggedByRole || "";
-    return newPostData;
-  },
-  getFilterAppointment: () => {
-    const params = new URLSearchParams(window.location.search);
-    let page = params.get("page");
-    let searchString = params.get("searchString");
-    let status = params.get("status");
-    let newPostData = {};
-    newPostData.page = page || 1;
-    newPostData.perPage = common.perPageData();
-    newPostData.searchString = searchString || "";
-    newPostData.status = status || "";
-    return newPostData;
-  },
-
-
   getArticleFilter: () => {
     const params = new URLSearchParams(window.location.search);
     let page = params.get("page");

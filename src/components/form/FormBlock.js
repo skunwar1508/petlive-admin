@@ -124,12 +124,7 @@ const FormBlock = memo(({
                 setResAdmin(resData);
                 fields.forEach((obj) => {
                     const name = obj?.name;
-                    let value = resData[name] || '';
-                    if(value?._id) {
-                        value = value?._id || '';
-                    }
-
-                    formik.setFieldValue(name, value);
+                    formik.setFieldValue(name, resData[name] || '');
                 });
             } catch (error) {
                 common.error(error);

@@ -7,7 +7,6 @@ import SearchFormik from '../../components/common/searchFormik';
 import { UserContext } from '../../context/theme';
 import ReactConfirm from '../../components/confirm/reactConfirm';
 import ViewMore from '../../components/modal/viewMoreContent';
-import DateFormate from '../../components/dateFormate';
 
 function List() {
   let navigate = useNavigate();
@@ -34,15 +33,15 @@ function List() {
     common.loader(true);
     await authAxios({
       method: 'POST',
-      url: `/admin/contacts/paginate`,
+      url: `/services/pagination`,
       data: postData,
     })
       .then((res) => {
         setPaginData({
           ...paginData,
           activePage: page,
-          list: res?.data?.data?.data || [],
-          totalItemsCount: res?.data?.data?.totalCount,
+          list: res?.data?.data || [],
+          totalItemsCount: res?.data?.totalCount,
         });
       })
       .catch((error) => {
@@ -62,7 +61,7 @@ function List() {
         activePage: pageNumber || 1,
         list: [],
       });
-      navigate(`/contacts/list/${pageNumber}?searchString=${searchString || ''}`);
+      navigate(`/services/list/${pageNumber}?searchString=${searchString || ''}`);
     }
   };
 
@@ -80,12 +79,12 @@ function List() {
                   search.page = 1;
                   search.searchString = values.searchString;
                   const queryString = new URLSearchParams(search).toString();
-                  navigate(`/contacts/list/${1}?` + queryString);
+                  navigate(`/services/list/${1}?` + queryString);
                 }} />
               </div>
               <div className="right-widget ml-auto col-4">
                 <div className="float-right d-flex align-items-center">
-                  {/* <Link to={`/categories/add`} className="btn-custom btn-theme">Add</Link> */}
+                  <Link to={`/services/add`} className="btn-custom btn-theme">Add</Link>
                 </div>
               </div>
             </div>
@@ -95,10 +94,11 @@ function List() {
                   <thead>
                     <tr>
                       <th>S. No.</th>
-                      <th>Email</th>
-                      <th>Subject</th>
+                      <th>Title</th>
+                      <th>Price</th>
+                      <th>Status</th>
                       <th>Description</th>
-                      <th>Date</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -108,10 +108,25 @@ function List() {
                           <td>
                             {(Number(page) == 1 ? 0 : (Number(page) - 1) * paginData.itemsCountPerPage) + key + 1}
                           </td>
-                          <td>{data?.email}</td>
-                          <td>{data?.subject}</td>
+                          <td>{data?.name}</td>
+                          <td>{data?.price}</td>
                           <td><ViewMore data={data?.description} /></td>
-                          <td><DateFormate>{data?.createdAt}</DateFormate></td>
+                          <td>
+                          <ReactConfirm
+                            type="switch"
+                            value={data?.status}
+                            route={`/services/status/${data?._id}`}
+                            action={() => getData()}
+                            message='Are you sure you want to change the status?'
+                            method="POST"
+                            payload={{ status: !data?.status }}
+                          />
+                          </td>
+                          <td className='text-right'>
+                            <Link to={`/services/edit/${data?._id}`} className='btn btn-theme'>Edit</Link>
+                            {/* <ReactConfirm type='delete' route={`/admin/category/delete/${data?._id}`} action={() => getData()} message='Are you sure you want to delete this category?' /> */}
+                          </td>
+
                         </tr>
                       </React.Fragment>
                     ))}

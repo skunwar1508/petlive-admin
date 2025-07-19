@@ -10,8 +10,8 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const navigate = useNavigate();
     const [auth, setAuth] = useState(false);
-    const [Theme, setTheme] = useState("theme-4");
-    const [ThemeColor, setThemeColor] = useState("theme-color-22");
+    const [Theme, setTheme] = useState("theme-1");
+    const [ThemeColor, setThemeColor] = useState("theme-color-1");
     const [MiniSidebar, setMiniSidebar] = useState("");
     const [userInfo, setUserInfo] = useState({});
     const [breadcrumbs, setBreadcrumbs] = useState({});
@@ -61,7 +61,7 @@ export const UserProvider = ({ children }) => {
         let intrVal;
         if (auth) {
             intrVal = setInterval(() => {
-                refreshtoken();
+                // refreshtoken();
             }, 20000);
         }
         if (auth) {

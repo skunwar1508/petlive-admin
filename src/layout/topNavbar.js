@@ -44,7 +44,7 @@ const Setting = [
         title: "Change Password",
         icon: "icon-key",
         to: "/change-password",
-    },
+      },
     //   {
     //     title : "Setting",
     //     icon : "icon-settings",
@@ -247,8 +247,14 @@ function TopNavbar() {
                                 <li className="user-profile header-notification">
                                     <div className="dropdown-primary dropdown">
                                         <div className="dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <img src={`${userInfo.userImage?.fullUrl || '/assets/images/default_user.jpg'}`} className="img-radius img-fluid" alt="User-Profile" />
-                                            {/* <span>{userInfo.name}</span> */}
+                                            {userInfo.userImage?.fullUrl ? (
+                                                <img src={`${userInfo.userImage?.fullUrl}`} className="img-radius img-fluid" alt="User-Profile" />
+                                            ) : (
+                                                <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1.4 16C1.4 16 0 16 0 14.6667C0 13.3333 1.4 9.33333 7 9.33333C12.6 9.33333 14 13.3333 14 14.6667C14 16 12.6 16 12.6 16H1.4ZM7 8C8.11391 8 9.1822 7.57857 9.96985 6.82843C10.7575 6.07828 11.2 5.06087 11.2 4C11.2 2.93913 10.7575 1.92172 9.96985 1.17157C9.1822 0.421427 8.11391 0 7 0C5.88609 0 4.8178 0.421427 4.03015 1.17157C3.2425 1.92172 2.8 2.93913 2.8 4C2.8 5.06087 3.2425 6.07828 4.03015 6.82843C4.8178 7.57857 5.88609 8 7 8Z" fill="white" />
+                                                </svg>
+                                            )}
+                                            <span>{userInfo.name}</span>
 
                                             <i className="fa-solid fa-angle-down"></i>
                                         </div>

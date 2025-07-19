@@ -49,22 +49,21 @@ function List() {
       perPage: paginData.itemsCountPerPage,
       searchString: searchString || '',
     };
-    if (profileStatus || specialization || verificationStatus) {
+    if (profileStatus || verificationStatus) {
       postData.filters = {}
+      if (profileStatus) {
+        postData.filters.profileStatus = profileStatus;
+      }
+
+      if (verificationStatus) {
+        postData.filters.verificationStatus = verificationStatus;
+      }
     }
-    if (profileStatus) {
-      postData.filters.profileStatus = profileStatus;
-    }
-    if (specialization) {
-      postData.filters.specialization = specialization;
-    }
-    if (verificationStatus) {
-      postData.filters.verificationStatus = verificationStatus;
-    }
+
     common.loader(true);
     await authAxios({
       method: 'POST',
-      url: `/doctor/provider/paginate`,
+      url: `/doctor/pagination`,
       data: postData,
     })
       .then((res) => {
@@ -101,29 +100,6 @@ function List() {
   };
 
 
-  const [primary, setPrimary] = useState([]);
-  const [secondary, setSecondary] = useState([]);
-  const getSpecialization = () => {
-    authAxios.get(`/admin/specialization/getall/primary`).then((res) => {
-      setPrimary(res?.data?.data || []);
-    }).catch((error) => {
-      console.error(error);
-      common.error(error);
-    });
-  }
-  const getSecondarySpecialization = () => {
-    authAxios.get(`/admin/specialization/getall/secondary`).then((res) => {
-      setSecondary(res?.data?.data || []);
-    }).catch((error) => {
-      console.error(error);
-      common.error(error);
-    });
-  }
-
-  useEffect(() => {
-    getSpecialization();
-    getSecondarySpecialization();
-  }, [])
 
   return (
     <>
@@ -166,18 +142,6 @@ function List() {
                     <option value="approved">Approved</option>
                     {/* <option value="rejected">Rejected</option> */}
                   </select>
-                  <select value={specialization} className="form-select form-select-sm" onChange={(e) => {
-                    let search = common.getProviderFilter();
-                    search.page = 1;
-                    search.specialization = e.target.value;
-                    const queryString = new URLSearchParams(search).toString();
-                    navigate(`/providers/list/${1}?` + queryString);
-                  }}>
-                    <option value="">Specialization</option>
-                    {primary?.map((item) => (
-                      <option key={item?._id} value={item?._id}>{item?.title}</option>
-                    ))}
-                  </select>
                   {/* <Link to={`/providers/add`} className="btn-custom btn-theme">Add</Link> */}
                 </div>
               </div>
@@ -188,10 +152,12 @@ function List() {
                   <thead>
                     <tr>
                       <th>S. No.</th>
-                      <th>Provider ID</th>
+                      <th>Photo</th>
                       <th>Full Name</th>
                       <th>Email</th>
-                      <th>Specialization</th>
+                      <th>Registration No</th>
+                      <th>Consultation Fee</th>
+                      <th>Experience</th>
                       <th>Profile Status</th>
                       <th>Verification Status</th>
                       <th className="text-right"></th>
@@ -204,19 +170,16 @@ function List() {
                           <td>
                             {(Number(page) == 1 ? 0 : (Number(page) - 1) * paginData.itemsCountPerPage) + key + 1}
                           </td>
-                          <td>{data?.doctorId}</td>
-                          <td>Dr. {data?.firstName} {data?.lastName}</td>
-                          <td>{data?.email}</td>
-                          
                           <td>
-                            {
-                              data?.primarySpecialization?.title && data?.secondarySpecialization?.title
-                                ? `${data.primarySpecialization.title}, ${data.secondarySpecialization.title}`
-                                : data?.primarySpecialization?.title || data?.secondarySpecialization?.title || "-"
-                            }
+                            <div className='tablePhoto'>
+                              <img style={{width:'30px'}} src={data?.profileImage?.path || '/assets/images/default_user.jpg'} alt="Profile Photo" className="profile-photo" />
+                            </div>
                           </td>
-
-
+                          <td>{data?.name}</td>
+                          <td>{data?.email}</td>
+                          <td>{data?.registrationNo}</td>
+                          <td>{data?.consultationFee}</td>
+                          <td>{data?.experience}</td>
                           <td>
                             <ReactConfirm
                               type="switch"
@@ -241,8 +204,7 @@ function List() {
                             />
                           </td>
                           <td className="text-right">
-                            
-                            <button
+                            {/* <button
                               className="btn btn-info"
                               onClick={(e) => {
                                 e.stopPropagation(); // Prevent row click from triggering
@@ -251,7 +213,7 @@ function List() {
                               }}
                             >
                               Commission Update
-                            </button>
+                            </button> */}
 
                             <button
                               className="btn btn-info ml-1"
@@ -264,124 +226,6 @@ function List() {
                             </button>
                           </td>
                         </tr>
-                        {expandedRows.includes(data._id) && (
-                          <tr>
-                            <td colSpan="8">
-                              <div className="expanded-row">
-                                <div className="row">
-                                  <div className="col-md-12">
-                                    <h4 className="section-title">Professional Details</h4>
-                                    <div className='row'>
-                                      <div className="col-md-2">
-                                        <img src={data?.profileImage?.path || '/assets/images/default_user.jpg'} alt="Profile Photo" className="profile-photo" />
-                                      </div>
-                                      <div className='col-md-10'>
-                                        <ul className="details-list mt-3">
-                                          <li>
-                                            <strong>Clinic Name:</strong> {data?.clinicName}
-                                          </li>
-                                          <li>
-                                            <strong>Clinic Location:</strong> {data?.clinicLocation}
-                                          </li>
-                                          <li>
-                                            <strong>Reg Number:</strong> {data?.regNumber}
-                                          </li>
-                                          <li>
-                                            <strong>License Image:</strong> <a href={data?.licenseImage?.path} target="_blank"> <u> View License Image </u></a>
-                                          </li>
-                                          <li>
-                                            <strong>Phone:</strong> {data?.phone}
-                                          </li>
-                                          <li>
-                                            <strong>Gender:</strong> {common.capitalizeWord(data?.gender)}
-                                          </li>
-                                          <li>
-                                            <strong>DOB:</strong> {new Date (data?.dob).toLocaleDateString('en-IN', { timeZone: 'IST' })}
-                                          </li>
-                                        </ul>
-                                      </div>
-                                      <div className='col-md-12'>
-                                        <ul className="details-list">
-                                          <li>
-                                            <strong>About:</strong> {data?.about}
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </div>
-
-                                  </div>
-
-                                </div>
-                                <div className="row">
-                                  <div className="col-md-6">
-                                    <h4 className="section-title">Specialization Details</h4>
-                                    <ul className="details-list">
-                                      <li>
-                                        <strong>Primary Specialization:</strong> {data?.primarySpecialization?.title}
-                                      </li>
-                                      {data?.primarySpecialization == 'other' && (
-                                        <li>
-                                          <strong>Primary Specialization:</strong> {data?.primarySpecialization?.title}
-                                        </li>
-                                      )
-                                      }
-                                      <li>
-                                        <strong>Sub Specialization:</strong> {data?.subSpecialization}
-                                      </li>
-                                      <li>
-                                        <strong>Secondary Specialization:</strong> {data?.secondarySpecialization?.title}
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <h4 className="section-title">Consultation Details</h4>
-                                    <ul className="details-list">
-                                      {/* <li>
-                                        <strong>Consultation Type:</strong>
-                                      </li> */}
-                                      {/* {data?.consultationType?.inperson && ( */}
-                                      {(  
-                                        <li>
-                                          <b>In Person</b>: {data?.inPersonFees ? `₹${data?.inPersonFees}` : "-"}
-                                        </li>
-                                      )}
-                                      {/* {data?.consultationType?.online && ( */}
-                                      {(
-                                        <li>
-                                          <b>Online</b>: {data?.onlineFees ? `₹${data?.onlineFees}` : "-"}
-                                        </li>
-                                      )}
-                                    </ul>
-                                  </div>
-                                </div>
-                                <div className="row">
-                                  <div className="col-md-6">
-                                    <h4 className="section-title">Availability Details</h4>
-                                    <ul className="details-list">
-                                      <li>
-                                        <strong>Available Days:</strong> {data?.availableDays?.map((d) => common.capitalizeWord(d))?.join(', ')}
-                                      </li>
-                                      <li>
-                                        <strong>Languages Spoken:</strong> {data?.languagesSpoken?.map((d) => common.capitalizeWord(d))?.join(', ')}
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <h4 className="section-title">Total Experience</h4>
-                                    <ul className="details-list">
-                                      <li>
-                                        <strong>Experience:</strong> {data?.experience}
-                                      </li>
-                                      {/* <li>
-                                        <strong>Terms:</strong> {data?.terms ? 'Accepted' : 'Not Accepted'}
-                                      </li> */}
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        )}
                       </React.Fragment>
                     ))}
                   </tbody>
@@ -392,13 +236,13 @@ function List() {
         </div>
       </div>
 
-      <CommisionUpdatePop 
+      <CommisionUpdatePop
         show={showCommPop}
         onClose={() => {
-            setShowCommPop(false)
+          setShowCommPop(false)
         }}
         data={parProviderDataForComm}
-        /> 
+      />
 
       {paginData?.totalItemsCount > paginData.itemsCountPerPage && (
         <PageModule

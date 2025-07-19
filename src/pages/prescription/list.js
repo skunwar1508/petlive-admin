@@ -231,16 +231,7 @@ function List() {
                           </td>
                           <td>{data?.prescriptionId}</td>
                           <td>{data?.patientId?.fullName}</td>
-                          <td>
-                            {Array.isArray(data?.providerId) 
-                              ? data.providerId.map((doctor, index) => (
-                                  <div key={index}>Dr. {doctor?.firstName || ''} {doctor?.lastName || ''}</div>
-                                ))
-                              : data?.providerId 
-                                ? `Dr. ${data?.providerId?.firstName || ''} ${data?.providerId?.lastName || ''}`
-                                : "-"
-                            }
-                          </td>
+                          <td>{`${data?.providerId?.firstName} ${data?.providerId?.lastName}`}</td>
                           <td><DateFormate children={data?.startDate} /></td>
                           <td><DateFormate children={data?.endDate} /></td>
                           <td className="text-right">
