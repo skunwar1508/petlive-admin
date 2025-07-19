@@ -64,8 +64,8 @@ function List() {
         setPaginData({
           ...paginData,
           activePage: page,
-          list: res?.data?.data?.data || [],
-          totalItemsCount: res?.data?.data?.totalCount,
+          list: res?.data?.data || [],
+          totalItemsCount: res?.data?.totalCount,
         });
 
       })
@@ -125,18 +125,6 @@ function List() {
                     <option value="true">Active</option>
                     <option value="false">In Active</option>
                   </select>
-                  <select value={currentProvider} className="form-select form-select-sm" onChange={(e) => {
-                    let search = common.getPatientFilter();
-                    search.page = 1;
-                    search.currentProvider = e.target.value;
-                    const queryString = new URLSearchParams(search).toString();
-                    navigate(`/patients/list/${1}?` + queryString);
-                  }}>
-                    <option value="">Current Provider</option>
-                    {providerList?.map((item) => (
-                      <option key={item?._id} value={item?._id}>{item?.title}</option>
-                    ))}
-                  </select>
                   {/* <Link to={`/patients/add`} className="btn-custom btn-theme">Add</Link> */}
                 </div>
               </div>
@@ -147,11 +135,10 @@ function List() {
                   <thead>
                     <tr>
                       <th>S. No.</th>
-                      <th>Patient ID</th>
                       <th>Full Name</th>
                       <th>Email</th>
                       <th>Phone</th>
-                      <th>Current Provider</th>
+                      <th>Pet Type</th>
                       <th>Profile Status</th>
                       <th className="text-right"></th>
                     </tr>
@@ -164,65 +151,25 @@ function List() {
                           <td>
                             {(Number(page) == 1 ? 0 : (Number(page) - 1) * paginData.itemsCountPerPage) + key + 1}
                           </td>
-                          <td>{data?.patientId}</td>
-                          <td>{data?.fullName}</td>
+                          <td>{data?.name}</td>
                           <td>{data?.email}</td>
                           <td>{data?.phone}</td>
-                          <td>{data?.provider || 'N/A'}</td>
+                          <td>{data?.petType || 'N/A'}</td>
                           <td>
                             <ReactConfirm
                               type="switch"
-                              value={data?.isEnabled}
+                              value={data?.isActive}
                               route={`/patient/status/${data?._id}`}
                               action={() => getData()}
                               message='Are you sure you want to change the profile status?'
                               method="POST"
-                              payload={{ status: !data?.isEnabled }}
+                              payload={{ isActive: !data?.isActive }}
                             />
                           </td>
                           <td className="text-right">
-                            <button
-                              className="btn btn-info"
-                              onClick={(e) => {
-                                e.stopPropagation(); // Prevent row click from triggering
-                                toggleRow(data._id);
-                              }}
-                            >
-                              {expandedRows.includes(data._id) ? 'Hide' : 'View'}
-                            </button>
+                            <Link to={`/patients/edit/${data?._id}`} className="btn btn-sm btn-theme">Edit</Link>
                           </td>
                         </tr>
-                        {expandedRows.includes(data._id) && (
-                          <tr>
-                            <td colSpan="8">
-                              <div className="expanded-row">
-                                <div className="row">
-                                  <div className="col-md-12">
-                                    <h4 className="section-title">Professional Details</h4>
-                                    <div className='row'>
-                                      <div className="col-md-2">
-                                        <img src={data?.profileImage?.path || '/assets/images/default_user.jpg'} alt="Profile Photo" className="profile-photo" />
-                                      </div>
-                                      <div className='col-md-10'>
-                                        <ul className="details-list mt-3">
-                                          <li>
-                                            <strong>Aadhar:</strong> {data?.aadhar}
-                                          </li>
-                                          <li>
-                                            <strong>Created At:</strong> {data?.createdAt}
-                                          </li>
-                                          <li>
-                                            <strong>Updated At:</strong> {data?.updatedAt}
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        )}
                       </React.Fragment>
                     ))}
                   </tbody>
