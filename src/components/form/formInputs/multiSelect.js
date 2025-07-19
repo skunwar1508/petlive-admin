@@ -22,6 +22,7 @@ const MultiSelectInput = memo((props) => {
         valueName,
         dependency,
         dependencyId,
+        options = [],
     } = props;
 
     // Extract formik props
@@ -59,6 +60,8 @@ const MultiSelectInput = memo((props) => {
                 }));
                 setApiData(formattedData);
             });
+        }else{
+            setApiData(options || []);
         }
     }, [dependency, route, dependencyId]);
     
@@ -158,6 +161,7 @@ MultiSelectInput.propTypes = {
     valueName: PropTypes.string,
     dependency: PropTypes.string,
     dependencyId: PropTypes.string,
+    options: PropTypes.array, // options is an array
 };
 
 export default MultiSelectInput;

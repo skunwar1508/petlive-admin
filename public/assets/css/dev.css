@@ -1477,8 +1477,23 @@ ul.nav-right li a {
   font-size: 16px;
   color: #787878;
 }
+.gap-1 {
+  gap: 10px;
+}
+.gap-2 {
+  gap: 20px;
+}
 .gap-3 {
   gap: 30px;
+}
+.gap-4 {
+  gap: 40px;
+}
+.gap-5 {
+  gap: 50px;
+}
+.gap-6 {
+  gap: 60px;
 }
 .expanded-row {
   padding: 20px;

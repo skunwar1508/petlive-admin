@@ -13,12 +13,13 @@ const Add = () => {
     const { setBreadcrumbs } = useContext(UserContext);
     let { id } = useParams()
     const [formConfig, setFormConfig] = useState({
-        name: "Add Provider",
-        redirect: "/providers/list/1",    
+        name: "Add Vet",
+        redirect: "/doctor/list/1",
+        postApi: '/doctor/create',
         fields: [
             {
                 type: 'text',
-                name: 'fullName',
+                name: 'name',
                 label: 'Full Name',
                 errorMessage: 'Please enter full name',
             },
@@ -47,80 +48,106 @@ const Add = () => {
             },
             {
                 type: 'datepicker',
-                name: 'dateOfBirth',
+                name: 'dob',
                 label: 'Date of Birth',
                 showYearDropdown: true,
                 showMonthDropdown: true,
                 errorMessage: 'Please enter date of birth',
             },
             {
-                type: 'text',
-                name: 'specialization',
-                label: 'Specialization',
-                errorMessage: 'Please enter specialization',
-            },
-            {
-                type: 'text',
-                name: 'license',
-                label: 'License Number',
-                errorMessage: 'Please enter license number',
-            },
-            {
                 type: 'number',
-                name: 'yearsOfExperience',
+                name: 'experience',
                 label: 'Years of Experience',
                 errorMessage: 'Please enter years of experience',
+                min: 1,
             },
             {
                 type: 'text',
-                name: 'expertise',
-                label: 'Expertise',
-                errorMessage: 'Please enter expertise',
+                name: 'registrationNo',
+                label: 'Registration Number',
+                errorMessage: 'Please enter registration number',
+            },
+            {
+                type: 'file',
+                name: 'profileImage',
+                label: 'Profile Image',
+                errorMessage: 'Please upload profile image',
+            },
+            {
+                type: 'file',
+                name: 'licenceImage',
+                label: 'Licence Image',
+                errorMessage: 'Please upload licence image',
             },
             {
                 type: 'text',
-                name: 'accountHolder',
-                label: 'Account Holder Name',
-                errorMessage: 'Please enter account holder name',
+                name: 'primarySpecialisation',
+                label: 'Primary Specialisation',
+                errorMessage: 'Please enter primary specialisation',
             },
             {
                 type: 'text',
-                name: 'bankName',
-                label: 'Bank Name',
-                errorMessage: 'Please enter bank name',
+                name: 'otherSpecialisation',
+                label: 'Other Specialisations',
+                errorMessage: 'Please enter other specialisations',
+                options: [], // Populate dynamically if needed
             },
             {
-                type: 'text',
-                name: 'accountNumber',
-                label: 'Account Number',
-                errorMessage: 'Please enter account number',
+                type: 'multiselect',
+                name: 'services',
+                label: 'Services',
+                isMulti: true,
+                dependency: 'none',
+                labelName: 'name',
+                valueName: '_id',
+                endpoint: 'data',
+                route: '/services/getAll',
+                errorMessage: 'Please select services',
+                placeholder: 'Select services',
+                value: []
+
             },
             {
-                type: 'text',
-                name: 'ifsc',
-                label: 'IFSC Code',
-                errorMessage: 'Please enter IFSC code',
+                type: 'multiselect',
+                name: 'animalPreference',
+                label: 'Animal Preference',
+                isMulti: true,
+                errorMessage: 'Please select animal preference',
+                options: [
+                    { label: 'Dog', value: 'Dog' },
+                    { label: 'Cat', value: 'Cat' }
+                ],
             },
             {
                 type: 'number',
-                name: 'commissionRate',
-                label: 'Commission Rate (%)',
-                errorMessage: 'Please enter commission rate',
+                name: 'consultationFee',
+                label: 'Consultation Fee',
+                min: 1,
+                max: 100,
+                regex: /^(100|[1-9][0-9]?)$/,
+                errorMessage: 'Please enter consultation fee (max 100)',
+            },
+            {
+                type: 'textarea',
+                name: 'bio',
+                label: 'Bio',
+                errorMessage: 'Please enter bio',
             },
         ],
     });
-    
+
 
     useEffect(() => {
         let pageInfo = {
             link: '/',
-            title: `Add Provider`
+            title: `Add Vet`
         }
         if (id) {
             setFormConfig(prev => ({
                 ...prev,
-                getApi: `/doctor/provider/detail/${id}`,
-                updateApi: `/doctor/provider/${id}`,
+                name: "Edit Vet",
+                getApi: `/doctor/details/${id}`,
+                updateApi: `/doctor/profile/update/${id}`,
             }))
         }
         setBreadcrumbs(pageInfo)
@@ -138,5 +165,10 @@ const Add = () => {
         </div>
     )
 }
+
+
+
+
+
 
 export default Add;

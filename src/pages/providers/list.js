@@ -95,7 +95,7 @@ function List() {
       });
       const filters = common.getProviderFilter()
       const queryString = new URLSearchParams(filters).toString();
-      navigate(`/providers/list/${pageNumber}?${queryString}`);
+      navigate(`/doctor/list/${pageNumber}?${queryString}`);
     }
   };
 
@@ -113,17 +113,17 @@ function List() {
                   search.page = 1;
                   search.searchString = values.searchString;
                   const queryString = new URLSearchParams(search).toString();
-                  navigate(`/providers/list/${1}?` + queryString);
+                  navigate(`/doctor/list/${1}?` + queryString);
                 }} />
               </div>
               <div className="right-widget ml-auto col-4">
-                <div className="float-right d-flex align-items-center">
+                <div className="float-right d-flex align-items-center gap-1">
                   <select value={profileStatus} className="form-select form-select-sm" onChange={(e) => {
                     let search = common.getProviderFilter();
                     search.page = 1;
                     search.profileStatus = e.target.value;
                     const queryString = new URLSearchParams(search).toString();
-                    navigate(`/providers/list/${1}?` + queryString);
+                    navigate(`/doctor/list/${1}?` + queryString);
                   }}>
                     <option value="">Profile Status</option>
                     <option value="true">Active</option>
@@ -135,14 +135,14 @@ function List() {
                     search.verificationStatus = e.target.value;
 
                     const queryString = new URLSearchParams(search).toString();
-                    navigate(`/providers/list/${1}?` + queryString);
+                    navigate(`/doctor/list/${1}?` + queryString);
                   }}>
                     <option value="">Verification Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    {/* <option value="rejected">Rejected</option> */}
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    {/* <option value="Rejected">Rejected</option> */}
                   </select>
-                  {/* <Link to={`/providers/add`} className="btn-custom btn-theme">Add</Link> */}
+                  <Link to={`/doctor/add`} className="btn-custom btn-theme">Add</Link>
                 </div>
               </div>
             </div>
@@ -172,7 +172,7 @@ function List() {
                           </td>
                           <td>
                             <div className='tablePhoto'>
-                              <img style={{width:'30px'}} src={data?.profileImage?.path || '/assets/images/default_user.jpg'} alt="Profile Photo" className="profile-photo" />
+                              <img style={{ width: '30px' }} src={data?.profileImage?.path || '/assets/images/default_user.jpg'} alt="Profile Photo" className="profile-photo" />
                             </div>
                           </td>
                           <td>{data?.name}</td>
@@ -183,47 +183,28 @@ function List() {
                           <td>
                             <ReactConfirm
                               type="switch"
-                              value={data?.isEnabled}
-                              route={`/doctor/provider/status/${data?._id}`}
+                              value={data?.isActive}
+                              route={`/doctor/profileStatus/${data?._id}`}
                               action={() => getData()}
                               message='Are you sure you want to change the profile status?'
                               method="PUT"
-                              payload={{ status: !data?.isEnabled }}
+                              payload={{ isActive: !data?.isActive }}
                             />
                           </td>
                           <td>
                             <ReactConfirm
                               type="dropdown"
                               value={data?.approveProfile}
-                              route={`/doctor/provider/approve/${data?._id}`}
+                              route={`/doctor/status/${data?._id}`}
                               action={() => getData()}
                               message='Are you sure you want to change the profile status?'
                               method="PUT"
-                              options={[{ label: 'Pending', value: 'pending' }, { label: 'Approved', value: 'approved' }, { label: 'Rejected', value: 'rejected' }]}
+                              options={[{ label: 'Pending', value: 'Pending' }, { label: 'Approved', value: 'Approved' }, { label: 'Rejected', value: 'Rejected' }]}
 
                             />
                           </td>
                           <td className="text-right">
-                            {/* <button
-                              className="btn btn-info"
-                              onClick={(e) => {
-                                e.stopPropagation(); // Prevent row click from triggering
-                                setParProviderDataForComm(data);
-                                setShowCommPop(true)
-                              }}
-                            >
-                              Commission Update
-                            </button> */}
-
-                            <button
-                              className="btn btn-info ml-1"
-                              onClick={(e) => {
-                                e.stopPropagation(); // Prevent row click from triggering
-                                toggleRow(data._id);
-                              }}
-                            >
-                              {expandedRows.includes(data._id) ? 'Hide' : 'View'}
-                            </button>
+                            <Link to={`/doctor/edit/${data?._id}`} className="btn btn-sm btn-primary mr-2">Edit</Link>
                           </td>
                         </tr>
                       </React.Fragment>
