@@ -1,0 +1,23 @@
+.badge {
+    color: #fff !important;
+}
+.btn .badge{
+    margin-left:8px;
+    vertical-align: middle;
+}
+.badge-light{
+    color:#000 !important;
+}
+.badge-dot {
+    position: absolute;
+    border: #fff solid 2px;
+    top: -17px !important;
+    right: -17px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50px;
+}
+.divider {
+    border-bottom: 1px solid #ddd;
+    margin: 12px 0px;
+}

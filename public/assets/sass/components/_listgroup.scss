@@ -1,0 +1,21 @@
+.widget-content {
+    flex-direction: row;
+    align-items: center;
+}
+.widget-content-wrapper {
+    display: flex;
+    flex: 1;
+    position: relative;
+    align-items: center;
+}
+.widget-content-right {
+    margin-left: auto;
+}
+.widget-numbers {
+    font-weight: bold;
+    font-size: 1.8rem;
+    display: block;
+}
+.widget-content-actions>button {
+    font-size: .775rem;
+}

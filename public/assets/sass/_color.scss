@@ -1,0 +1,60 @@
+
+
+/*There is five versions of this theme (theme1, theme2,theme3,theme4,theme5)*/
+
+/*--theme-color-1-- */
+$color1 : #1160c1;
+$color2 :#143065;
+$color3 : #6c757d;
+$color4 : #000;
+$color5 : #9D0730;
+$color6 : #6998AB;
+$color7 : #362222;
+$color8 : #064635;
+$color9 : #370665;
+$color10 : #334756;
+$color11 : #AB6D23;
+$color12 : #029793;
+$color13 : #B97A95;
+$color14 : #346751;
+$color15 : #AA4A30;
+$color16 : #522546;
+$color17 : #0C7B93;
+$color18 : #53354A;
+$color19 : #521262;
+$color20 : #0F4C75;
+$color21 : #464F41;
+$color22 : #008C95;
+
+
+$colors : (
+    "color-1" : $color1,
+    "color-2" : $color2,
+    "color-3" : $color3,
+    "color-4" : $color4,
+    "color-5" : $color5,
+    "color-6" : $color6,
+    "color-7" : $color7,
+    "color-8" : $color8,
+    "color-9" : $color9,
+    "color-10" : $color10,
+    "color-11" : $color11,
+    "color-12" : $color12,
+    "color-13" : $color13,
+    "color-14" : $color14,
+    "color-15" : $color15,
+    "color-16" : $color16,
+    "color-17" : $color17,
+    "color-18" : $color18,
+    "color-19" : $color19,
+    "color-20" : $color20,
+    "color-21" : $color21,
+    "color-22" : $color22,
+);
+
+
+:root{
+    --bs-secondary:#6c757d;
+    --bs-light:#f8f9fa;
+}
+

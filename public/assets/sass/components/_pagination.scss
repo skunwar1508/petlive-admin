@@ -1,0 +1,60 @@
+
+.page-item.active .page-link{
+    background-color: $color1;
+    border-color: $color1;
+    color:#fff;
+}
+.page-item .page-link{
+    color:$color1;
+}
+
+@each $key,$val in $colors{
+    .theme-#{$key}{
+        @include pagination-active-color($val);
+        .paging-3 .page-item.active .page-link {
+            background: $val;
+        }
+    }  
+}
+
+.pagination-rounded li a {
+    border-radius: 50px !important;
+    margin: 0 0.3rem;
+}
+.paging-2 a.page-link {
+    margin-left: 0px !important;
+    margin-right: 10px;
+    border: 0px;
+}
+
+.paging-3 .page-link {
+    background: linear-gradient(0deg, #a7a7a7de, #e9e9e952);
+    padding-left: .98rem;
+    padding-right: 0.98rem;
+    margin-right: 0px;
+    border:0px;
+}
+
+.paging-4 li.page-item:nth-last-child(2) a,
+.paging-4 li.page-item:nth-child(2) a {
+    display: none;
+}
+.paging-4 ul.pagination li.page-item:first-child a {
+    border-radius: 12px 0px 0px 12px !important;
+}
+.paging-4 ul.pagination li.page-item:last-child a {
+    border-radius: 0px 12px 12px 0px !important;
+}
+
+.paging-4 a.page-link>i.fa-fast-forward::before {
+    content: "\f101" !important;
+}
+.paging-4 a.page-link>span>i.fa-fast-backward:before {
+    content: "\f100" !important;
+}
+.paging-4 a.page-link>span>i.fa-step-backward::before {
+    content: "\f104" !important;
+}
+.paging-4 a.page-link>span>i.fa-step-forward::before {
+    content: "\f105" !important;
+}

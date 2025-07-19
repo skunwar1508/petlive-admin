@@ -1,0 +1,111 @@
+
+.nav-tabs .nav-link:not(.disabled){
+    color:$color1;
+}
+
+.nav-item>button.nav-link.active::after, 
+.nav-item>button.nav-link::after{
+    background-color: $color1;
+}
+
+@each $key,$val in $colors {
+    .theme-#{$key} {
+        .nav-tabs .nav-link:not(.disabled) {
+            color: $val;
+        }
+
+        .nav-item>button.nav-link.active::after,
+        .nav-item>button.nav-link::after {
+            background-color: $val;
+        }
+
+        @include tab-btn-group($val);
+    }
+}
+
+
+ul.nav-justify .nav-item {
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f2f2f2;
+    border-right: 1px solid #ddd;
+    padding-top: 0px;
+}
+ul.nav-justify .nav-item>button {
+    width: 100%;
+    padding: .9rem 0rem;
+}
+
+ul.animated-tab-line{
+    .nav-item {
+        flex-basis: 0;
+        flex-grow: 1;
+        text-align: center;
+    }
+    .nav-item>button.nav-link.active,
+    .nav-item>button.nav-link:hover {
+        border-top: 0px;
+        border-left: 0px;
+        border-right: 0px;
+        width: 100%;
+    }
+    .nav-item>button.nav-link {
+        width: 100%;
+        position: relative;
+    }
+    .nav-item {
+        margin: 0px 8px 0px 0px;
+    }
+    
+    .nav-item>button.nav-link.active::after, 
+    .nav-item>button.nav-link::after {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 3px;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        transition: 0.3s all ease;
+        
+    }
+    
+    .nav-item>button.nav-link::after {
+        width: 0;
+    }
+    
+    .nav-item>button.nav-link:hover::after {
+        width: 100%;
+    }
+}
+
+
+.tab-btn-group{
+    border-bottom: 0px;
+
+     .nav-item >.nav-link {
+        font-size: .875rem;
+        padding: .3rem 1rem;
+        border-radius: 50px;
+        font-weight: normal;
+        cursor: pointer;
+        border: 1px solid $color1;
+    }
+     .nav-item {
+        margin-left: 5px;
+    }
+     .nav-item >.nav-link:hover,
+     .nav-item >.nav-link.active  {
+        background: $color1;
+        color:#fff;
+    }
+     
+}
+
+
+
+

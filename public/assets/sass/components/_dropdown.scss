@@ -1,0 +1,117 @@
+
+
+@mixin dropdown__Hover__bgColor($dropPick_color){
+    .dropdown-menu-hover > a.dropdown-item:hover {
+        background: transparent;
+        color: $dropPick_color;
+    }
+    .dropdown-hover-background .dropdown-item:hover {
+        background: $dropPick_color;
+        color: #fff;
+    }
+}
+
+@each $key,$val in $colors{
+    .theme-#{$key}{
+        @include dropdown_activeColor($val);
+        .dropdown-menu li.nav-item a:hover{
+            color:$val;
+        }
+        @include dropdown__Hover__bgColor($val);
+    }
+}
+
+
+.dropdown-menu-end {
+    right: 0px;
+    left: auto;
+}
+
+ul.profile-notification{
+    li a {
+        color: #333;
+        padding: .275rem .875rem;
+        display: block;
+
+        i {
+            margin-right: .3rem;
+        }
+    }
+}
+ul.profile-notification {
+    width: auto !important;
+    overflow-y:hidden !important;
+}
+
+
+.dropdown-menu {
+    min-width: 14rem;
+    font-size: .875rem;
+
+    li.nav-item{
+        &.nav-item-header{
+            text-transform: uppercase;
+            font-size: .73333rem;
+            color: #6c757d;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+        }
+        &.nav-item-btn{
+            padding:.5rem 1rem;
+        }
+    
+        &.nav-item-divider{
+            margin: 0.5rem 0;
+            height: 1px;
+            overflow: hidden;
+            background: #dee2e6;
+        }
+        a {
+            display: flex;
+            align-items: center;
+            font-size: .88rem;
+            color: #666;
+            padding: .4rem 1rem;
+            &:hover {
+                color:$color1;
+            }
+        }
+        .nav-link .nav-link-icon {
+            color: #3f6ad8;
+            font-size: 1rem;
+            width: 30px;
+            text-align: center;
+            opacity: .45;
+            margin-left: -10px;
+        }
+
+    }
+}
+
+.dropdown-menu-icon{
+    .dropdown-item i.nav-link-icon {
+        color: #858383;
+    }
+    .dropdown-item>span {
+        margin-left: 10px;
+    }
+}
+
+.dropdown-menu-lg{
+    min-width:22rem;
+}
+.dropdown-menu-xl{
+    min-width:25rem;
+}
+.dropdown-menu-rounded .dropdown-item {
+    border-radius: 100px;
+}
+.dropdown-menu-shadow {
+    box-shadow: rgb(0 0 0 / 15%) 0px 0px 20px, rgba(0,0,0,0.10) 0px 4px 10px 3px;
+    border-color: #ddd;
+}
+
+
+
+
+

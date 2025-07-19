@@ -1,0 +1,395 @@
+
+@import 'var';
+@import 'typography';
+@import 'color';
+@import 'mixins';
+@import 'general';
+@import 'features';
+@import 'table';
+
+@import './components/button';
+@import './components/cards';
+@import './components/dropdown';
+@import './components/form';
+@import './components/listgroup';
+@import './components/badge';
+@import './components/pagination';
+@import './components/progressbar';
+@import './components/accordion';
+@import './components/tab';
+@import './components/datepicker';
+@import './components/rating';
+@import './components/theme-changer';
+@import './components/switch';
+
+
+  
+// Core css
+
+// Default Theme
+@include leftSidebar-bg($color1);
+@include breadcrumbTitle_icon($color1, 1px solid rgba(17, 96, 193, 0.253));
+ul.has_menu{
+    background:$color1;
+}
+.theme-3{
+    @include theme3_theme_color($color1, $color1,#c6dfff,#9aa7cc);
+}
+
+/* -- theme-color-1 -- */
+
+@each $key,$val in $colors{
+        .theme-#{$key}{
+            @include leftSidebar-bg($val);
+            @include breadcrumbTitle_icon($val, lighten($val,60%));
+            &.theme-2 .left-nav-menu ul.has_menu{
+                background:$val;
+            }
+            &.theme-3{
+                @include theme3_theme_color($val, $val,lighten($val,60%), darken($val,1%));
+            }
+            & .left-nav-menu ul.has_menu{
+                background:lighten($val,3%);
+            }
+            & .left-nav-menu a.btn-toggle:not(.collapsed){
+                background:lighten($val,7%);
+            }
+            & .left-nav-menu .has_menu.active{
+                background:darken($val,7%);
+            }
+            
+        }  
+    }
+
+
+.theme-color-2 {
+    .table>thead.table-primary th{
+        background-color:var(--bs-light);
+    }
+    table.table-primary{
+        --bs-table-bg:#a6bbcf;
+    }
+}
+
+.theme-color-3 {
+    .table>thead.table-primary th{
+        background-color:var(--bs-light);
+    }
+    table.table-primary{
+        --bs-table-bg:#e2e3e5;
+    }
+    .all-content-wrapper{
+        background: #f5f5f5;
+    }
+}
+
+.theme-color-4 {
+    .table>thead.table-primary th{
+        background-color:var(--bs-table-bg);
+    }
+    table.table-primary{
+        --bs-table-bg:#f8f9fa;
+    }
+    
+}
+.theme-color-5 {
+    .all-content-wrapper{
+        background: #f5f5f5;
+    }
+    .table>thead.table-primary th{
+        background-color:var(--bs-light);
+    }
+    table.table-primary{
+        --bs-table-bg:#e2e3e5;
+    }
+}
+
+
+
+.theme-1{
+    .left-sidebar-wrapper .left-nav-menu ul li a.active {
+        background: #efefef1f;
+    }
+}
+
+/*-- theme2---- */ 
+.theme-2 {
+    .left-sidebar-wrapper nav.sidebar {
+        position: sticky;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        height: 70px;
+        box-shadow: rgba(0, 0, 0, 0.151) 0px 4px 6px 0px;
+    }
+    nav.sidebar .left-nav-menu {
+        flex: 2;
+        height: auto;
+        overflow-y: visible;
+    }
+    nav.sidebar .left-nav-menu > ul {
+        display: flex;
+        margin-bottom: 0px;
+        position:relative;
+        justify-content:flex-end;
+        li{
+            position:relative;
+        }
+    }
+    .left-sidebar-wrapper {
+        width: 100%;
+    }
+    .left-nav-menu ul li a span.menu_txt {
+        padding-right: .5rem;
+    }
+    .left-nav-menu ul.has_menu{
+        position: absolute;
+        width: auto;
+        left: 0px;
+        z-index: 9999;
+        top: 56px;
+        white-space: nowrap;
+    }
+    .left-nav-menu a.btn-toggle.collapsed::after {
+        right: 6px !important;
+    }
+    .left-nav-menu a.btn-toggle:not(.collapsed)::after{
+        right:6px !important;
+    }
+
+    .menu-hamburger {
+        display: none;
+    }
+    .slideUp_header {
+        display: block;
+        cursor: pointer;
+        transition: .3s all ease;
+    }
+    
+    .slideUp_header:hover {
+        transform: translateY(-5px);
+    }
+    ul.has_menu{
+        border-left:0px;
+    }
+    
+}
+
+/*-- theme3---- */
+.theme-3 {
+    .left-nav-menu>ul>li.active>a {
+        background: #fff;
+        border-radius: 0px 15px 15px 0px;
+        margin: 0px 8px 0px 0px;
+        font-weight: 500;
+        padding: .6rem 1rem;
+    }
+    .left-nav-menu>ul>li.active>a:hover{
+        background:#fff;
+        font-weight: 500;
+    }
+    .left-nav-menu ul li a {
+        // border-bottom: 1px solid #dddddd14;
+        padding: .8rem 1rem !important;
+    }
+
+    .left-nav-menu a.btn-toggle:not(.collapsed){
+        background:#fff !important;
+        font-weight: 500;
+    }
+    .left-sidebar-wrapper {
+        .left-nav-menu ul li{
+            margin-bottom: 1px;
+            a{
+                border-radius: 0px 15px 15px 0px;
+                margin: 0px 8px 0px 0px;
+                &.active{
+                    background: #efefef1f;
+                }
+            }
+        }
+    } 
+    .mini-sidebar ul.has_menu{
+        left:56px !important;
+        border-radius: $radius-md;
+        li a{
+            margin:0px;
+            border-radius: $radius-md;
+        }
+    }
+    .card{
+        border-radius: $radius-md;
+        box-shadow: rgba(0, 0, 0, 0.11) 0px -3px 12px 0px !important;
+        // overflow:hidden;
+    }
+    .all-content-wrapper .page-header {
+        padding-top: 40px;
+        background: linear-gradient(45deg, #c6dfff, #ffc6c6);
+        padding-bottom: 93px !important;
+        margin-bottom: -90px !important;
+    }
+       
+}
+/*-- theme4---- */
+.theme-4{
+    background: #faf0ea;
+    min-height: 100vh;
+    nav.navbar.header-navbar{
+        position: initial;
+        border-radius:50px;
+        width: 95%;
+        margin: 0 auto;
+    }
+    .breadcrumbBig_icon {
+        background: transparent;
+        box-shadow: none !important;
+    }
+    .all-content-wrapper {
+        padding-top: 20px;
+        margin-left: 245px;
+        background: #faf0ea;
+
+        .page-header {
+            padding-top: 17px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 17px !important;
+            max-width: 96%;
+            margin: 0 auto;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+            margin-bottom: 35px !important;
+            background: #f0e4dd;
+            border-radius: 14px;
+        }
+    }
+    .left-sidebar-wrapper nav.sidebar {
+        height: 96vh;
+        margin-top: 2vh;
+        margin-left: 15px;
+        border-radius: 20px;
+        box-shadow:0 0.46875rem 2.1875rem rgba(21, 21, 21, 0.17), 
+        0 0.9375rem 1.40625rem rgba(35, 35, 35, 0.17), 
+        0 0.25rem 0.53125rem rgba(22, 22, 22, 0.17),
+         0 0.125rem 0.1875rem rgba(26, 25, 25, 0.17);
+    }
+    &.mini-sidebar {
+        .left-sidebar-wrapper nav.sidebar {
+            overflow-y:inherit;
+        }
+    }
+    .left-sidebar-wrapper .left-nav-menu ul li a{
+        font-weight: 500;
+        padding:0.6rem 1rem;
+        border-bottom:1px solid #dddddd26;
+    }
+    .left-nav-menu ul li a span.menu_txt{
+        padding-left:.975rem;
+    }
+    .header-navbar .navbar-wrapper{
+        margin-left:0px;
+    }
+    ul.has_menu{
+        border-left:0px;
+    }
+
+    
+
+}
+
+/*-- theme5---- */
+.theme-5{
+    &.pageLogin{
+        background-color: transparent !important;
+        padding:0px !important;
+    }
+    @each $key,$val in $colors{
+        &.theme-#{$key}{
+            background: $val;
+        }  
+    }
+
+    &.page-wrapper {
+        min-height: 100vh;
+        padding: 30px 30px 30px 0px;
+    }
+    .all-content-wrapper {
+        padding-top: 21px;
+        margin-left: 230px;
+        background: #faf0ea;
+        border-radius: 20px;
+        height: 94vh;
+        overflow-y: scroll;
+        @include customScrollbar;
+        
+    }
+    nav.navbar.header-navbar{
+        position: initial;
+        border-radius:50px;
+        width: 95%;
+        margin: 0 auto;
+    }
+    .menu-hamburger {
+        color: #000;
+    }
+    li.header-notification {
+        color: #000;
+    }
+    li.user-profile.header-notification .dropdown-toggle span {
+        color: #000;
+    }
+    .left-sidebar-wrapper nav.sidebar {
+        box-shadow: none !important;
+        margin-left: 0px !important;
+    }
+    .left-sidebar-wrapper .left-nav-menu ul li a{
+        font-weight: 500;
+        padding:0.6rem 1rem;
+        border-bottom:1px solid #dddddd26;
+    }
+    ul.has_menu{
+        border-left:0px;
+    }
+    .left-nav-menu{
+        &::-webkit-scrollbar
+        {
+            width: 0px;
+        }
+    }
+
+    .left-nav-menu ul li a.active {
+        position: relative;
+        
+    }
+    .left-nav-menu ul li a.active::before {
+        position: absolute;
+        content: "";
+        width: 50px;
+        height: 100%;
+        right: 0px;
+        top: 0;
+        border-right: 15px solid #faf0ea;
+        border-bottom: 20px solid transparent;
+        border-top: 20px solid transparent;
+    }
+    
+    
+}
+.left-nav-menu  ul{
+    padding-left: 0;
+    margin-bottom: 0;
+}
+@import 'responsive';
+
+  
+
+
+
+
+
+
+
+
+    
+
+
+ 

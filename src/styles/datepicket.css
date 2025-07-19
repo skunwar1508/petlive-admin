@@ -1,0 +1,70 @@
+.react-datepicker {
+    background: #fff;
+    border: 0px solid #000;
+    padding: 6px 13px 13px;
+    box-shadow: 0 0 10px #00000042;
+}
+
+.react-datepicker__header {
+    background: #fff;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.react-datepicker__day, .react-datepicker__day-name, .react-datepicker__time-name {
+    color: #333;
+}
+
+.react-datepicker__day {
+    border: 1px solid #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+}
+
+.react-datepicker__day.react-datepicker__day--selected {
+    background: #47c5c1;
+    border-color: #47c5c1;
+    color: #fff;
+}
+
+.react-datepicker__month-dropdown-container--scroll, .react-datepicker__month-dropdown-container--select, .react-datepicker__month-year-dropdown-container--scroll, .react-datepicker__month-year-dropdown-container--select, .react-datepicker__year-dropdown-container--scroll, .react-datepicker__year-dropdown-container--select {
+}
+
+.react-datepicker__month-dropdown-container select {
+    border: 0;
+}
+
+.react-datepicker__year-dropdown-container select {
+    border: 0;
+}
+
+.react-datepicker__header__dropdown.react-datepicker__header__dropdown--select {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px 12px;
+}
+
+.react-datepicker__navigation {
+    top: 10px !important;
+}
+
+.react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected, .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected {
+    color: #fff;
+    background: #47c5c1;
+}
+.react-datepicker__day:hover {
+    border-radius: 50%;
+    border: 1px solid #47c5c1;
+    background: #fff;
+}
+.react-datepicker__day--keyboard-selected:hover, .react-datepicker__month-text--keyboard-selected:hover, .react-datepicker__quarter-text--keyboard-selected:hover, .react-datepicker__year-text--keyboard-selected:hover {
+    background-color: #47c5c1;
+    border-radius: 50%;
+}
+
+
+
+.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle:after, .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle:before, .react-datepicker-popper[data-placement^=top] .react-datepicker__triangle:after, .react-datepicker-popper[data-placement^=top] .react-datepicker__triangle:before {
+    left: -48px;
+}

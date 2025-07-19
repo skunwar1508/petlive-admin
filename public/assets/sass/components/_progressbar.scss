@@ -1,0 +1,18 @@
+
+.progress-bar-sm {
+    height: 0.5rem;
+}
+.progress-bar-xs {
+    height: 0.3rem;
+}
+.progress-bar-rounded {
+    border-radius: 30px;
+}
+
+@each $key,$val in $colors{
+    .theme-#{$key}{
+        .progress-bar{
+            background-color:$val;
+        }
+    }  
+}

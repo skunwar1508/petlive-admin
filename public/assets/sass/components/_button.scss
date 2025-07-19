@@ -1,0 +1,55 @@
+@include btn-outline-primary($color1);
+
+@each $key,$val in $colors{
+    .theme-#{$key}{
+        @include btn-outline-primary($val);
+    }
+}
+
+.btn{
+    font-size: .8rem;
+}
+.btn-dashed {
+    border-style: dashed;
+}
+.btn-pill {
+    border-radius: 50px;
+}
+
+.btn-icon{
+    vertical-align: bottom;
+
+    .btn-icon-wrapper {
+        margin-right: 0.5rem;
+        margin-left: 0;
+        margin-top: 0;
+        font-size: 17px;
+        vertical-align: middle;
+        transition: color .1s;
+        display: inline-block;
+    }
+}
+.btn-shadow {
+    box-shadow: rgb(0 0 0 / 16%) 1px 0px 4px 2px;
+}
+.btn-custom {
+    padding: .4rem 1rem;
+    border-radius: .3rem;
+    border: 0px;
+    font-size: .9375rem;
+    outline: none;
+    transition:.3s all ease;
+}
+
+// Group button
+.btn-group .btn-custom:first-child {
+    border-radius: .3rem 0rem 0rem .3rem;
+    border-right: 1px solid #dddddd3d;
+}
+.btn-group .btn-custom:last-child {
+    border-radius: 0rem .3rem .3rem 0rem;
+    border-left: 1px solid #dddddd3d;
+}
+.btn-group .btn-custom {
+    border-radius: 0px;
+}

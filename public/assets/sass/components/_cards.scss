@@ -1,0 +1,53 @@
+.card{
+    transition:box-shadow .3s ease;
+}
+.moreItem_btn a.dropdown::after {
+    display: none;
+}
+.moreItem_btn a.dropdown {
+    background: #f7f7f7;
+    color: #333;
+    border-radius: 100%;
+    font-size: 1rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.moreItem_btn a.dropdown:hover,.moreItem_btn a.dropdown:active {
+    background: #eaeaea;
+}
+.moreItem_btn .dropdown-menu {
+    .dropdown-item {
+        span{
+            margin-right:.8rem;
+        }
+    }
+}
+
+.btn-actions-pane-right {
+    margin-left: auto;
+    white-space: nowrap;
+}
+.card-header .header-icon {
+    margin-right: .5rem;
+    font-size: 1.3rem;
+}
+
+.theme-4{
+    .card {
+        border-radius: 1rem !important;
+    }
+    .card-header{
+        border-radius:1rem 1rem 0 0 !important;
+    }
+    @each $key,$val in $colors{
+        &.theme-#{$key}{
+            .card-header{
+                background:rgba($val,20%) !important;
+            }
+        }
+    }
+  
+}

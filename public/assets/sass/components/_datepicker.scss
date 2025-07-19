@@ -1,0 +1,44 @@
+
+
+
+@each $key,$val in $colors{
+    .theme-#{$key}{
+        @include datePicker_closeBtn($val);
+        @include calendar_selected_dayBg($val); 
+    }
+}
+
+.react-datepicker__close-icon::after,
+li.react-datepicker__time-list-item--selected,
+.react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected,
+ .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected,
+ .react-datepicker__day--selected,
+ .react-datepicker__day--in-range,
+ .react-datepicker__year-text--selected{
+    background-color: $color1 !important;
+}
+.react-datepicker__input-container input {
+    border: 1px solid #efefef;
+    padding: 0.375rem 0.75rem;
+    background: #f8fbfb;
+    font-size: 0.875rem;
+    height: auto;
+    width: 100%;
+    border-radius: 0.25em;
+}
+
+.react-datepicker {
+    box-shadow: rgb(0 0 0 / 15%) 0px 0px 10px !important;
+    border: 1px solid #dadada !important;
+    border-radius: 0.5rem !important;
+    color: #333;
+}
+.react-datepicker .react-datepicker__header {
+    padding: 10px 0px 6px;
+}
+.react-datepicker__navigation-icon {
+    top: 7px !important;
+}
+.react-datepicker__time-box ul.react-datepicker__time-list{
+    @include customScrollbar;
+}

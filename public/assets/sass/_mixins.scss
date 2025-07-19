@@ -1,0 +1,196 @@
+
+@mixin sidebarWrapper{
+    min-width: 230px;
+    color: #fff;
+    position: fixed;
+    transition: all 0.3s;
+    z-index: 9999;
+    height: 100%;
+}
+
+@mixin sideNav_arrowIcon{
+    font-family: 'icomoon';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@mixin leftSidebar-bg($sidebarbg){
+    .left-sidebar-wrapper{
+        nav.sidebar {
+            background: $sidebarbg;
+        }
+    }
+}
+@mixin breadcrumbTitle_icon($icon-color, $border-color) {
+    .breadcrumbBig_icon{
+        background: #fff;
+        color: $icon-color;
+        border:1px solid $border-color;
+    }
+}
+@mixin customScrollbar{
+    &::-webkit-scrollbar
+        {
+            width: 1px;
+            background-color: #f5f5f500;
+        }
+
+        &::-webkit-scrollbar-thumb
+        {
+            background-color: #1b2a47ed;
+        }
+}
+
+@mixin mini_sideBar_responsive{
+    .left-sidebar-wrapper nav.sidebar {
+        min-width: 50px;
+    }
+    .left-sidebar-wrapper  .sidebar-header>a,
+    .left-sidebar-wrapper span.menu_txt,
+    .left-sidebar-wrapper .left-nav-menu li a.btn-toggle::after {
+        display: none;
+    }
+    .left-sidebar-wrapper .sidebar-header> strong {
+        display: block;
+    }
+    .all-content-wrapper {
+        margin-left: 50px !important;
+    }
+    .all-content-wrapper .header-navbar .navbar-wrapper {
+        margin-left: 22px;
+    }
+    
+}
+
+
+@mixin mini_sideBar_hasMenu{
+    ul.has_menu {
+        position: absolute;
+        left: 49px;
+        z-index: 99;
+        top: 0px;
+        min-width: 200px;
+        border-left: 0px;
+        box-shadow: rgba(0, 0, 0, 0.411) 4px 3px 9px 0px;
+        max-height: 300px;
+        overflow-y: scroll;
+        
+        @include customScrollbar;
+    }
+    .left-sidebar-wrapper .left-nav-menu {
+        overflow-x: visible;
+        overflow: visible;
+    }
+    ul.has_menu span.menu_txt {
+        display: inline-block;
+    }
+    .left-nav-menu li {
+        position: relative;
+    }
+}
+
+@mixin  theme3_theme_color($linkColor, $linkHover, $grad1, $grad2) {
+    .left-nav-menu>ul>li.active>a,
+        .left-nav-menu a.btn-toggle:not(.collapsed) {
+        color:$linkColor;
+        }
+        .left-nav-menu>ul>li.active>a:hover{
+            color:$linkHover;
+        }
+        .all-content-wrapper .page-header{
+            background: linear-gradient(45deg, $grad1, $grad2);
+        }
+}
+
+@mixin dropdown_activeColor ($activeColor){
+    .dropdown-item.active, .dropdown-item:active{
+        background:$activeColor;
+    } 
+}
+
+@mixin form-checked-input($themeColor){
+    .form-check-input:checked {
+        background-color:$themeColor;
+    border-color:$themeColor !important;
+    }
+    
+}
+
+@mixin check__color($check__color){
+    .control__checked::before{
+        border: solid $check__color;
+    }  
+}
+
+@mixin btn-outline-primary($btn-color){
+    .btn-outline-primary{
+        color:$btn-color;
+        border-color:$btn-color;
+        &:hover{
+            color:#fff;
+            background:$btn-color;
+        }
+    }
+}
+
+@mixin pagination-active-color($page-color){
+    .page-item.active .page-link{
+        background-color: $page-color;
+        border-color: $page-color;
+        color:#fff;
+    }
+    .page-item .page-link{
+        color:$page-color;
+        &:focus{
+            box-shadow: none;
+        }
+    }
+}
+
+@mixin tab-btn-group($primary-tab-color){
+    .tab-btn-group{
+        .nav-item >.nav-link {
+            border: 1px solid $primary-tab-color; 
+        }
+        .nav-item >.nav-link:hover,
+        .nav-item >.nav-link.active  {
+            background: $primary-tab-color;
+    
+        }
+    }
+}
+
+@mixin upload_file_color($prime_color){
+    .customFile__UploadWrap{
+        border: 2px dashed $prime_color;
+        background: rgba($prime_color,20%);
+
+        span.file_icon {
+            color:$prime_color;
+        }
+        >label{
+            background: $prime_color;
+        }
+    }
+}
+
+@mixin datePicker_closeBtn($theme_color){
+    .react-datepicker__close-icon::after{
+        background-color: $theme_color !important;
+    }
+}
+
+@mixin calendar_selected_dayBg($selected_bgColor){
+    .react-datepicker__day--keyboard-selected,
+    li.react-datepicker__time-list-item--selected,
+     .react-datepicker__month-text--keyboard-selected, 
+     .react-datepicker__quarter-text--keyboard-selected, 
+     .react-datepicker__year-text--keyboard-selected,
+     .react-datepicker__day--selected,
+     .react-datepicker__day--in-range,
+     .react-datepicker__year-text--selected{
+         background-color:$selected_bgColor !important;
+     }
+}

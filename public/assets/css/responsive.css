@@ -1,0 +1,46 @@
+@media (min-width: 1200px) and (max-width: 1600px) {}
+
+@media (min-width: 1200px) and (max-width: 1215px) {
+    .dashheaadbtncon.aboutprobtn a {top: -167px;    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .all-content-wrapper {
+        width: calc(100% - 260px) !important;
+        margin-left: 260px !important;
+    }
+    .dashheaadbtncon.aboutprobtn a {top: -167px;    }
+    .left-sidebar-wrapper .sidebar-header>a,
+    .left-sidebar-wrapper span.menu_txt,
+    .left-sidebar-wrapper .left-nav-menu li a.btn-toggle::after {
+        display: inline-block;
+    }
+
+    .no-order img {
+        height: 100px;
+    }
+
+    .dashboardTable table thead tr th.qr-code {
+        width: 50px !important;
+    }
+
+    .dashboardTable table tbody tr td {
+        font-size: 14px;
+    }
+    .dashboardTable table tbody tr td {
+        padding: 15px 2px;
+    }
+    .dashboardTable table tbody tr td.downloadQR {
+        width: 25% !important;
+    }
+
+
+
+}
+
+
+@media (min-width: 768px) and (max-width: 991px) {}
+
+@media (max-width: 767px) {}
+
+@media (max-width:575px) {}
