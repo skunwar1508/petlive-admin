@@ -33,7 +33,7 @@ function List() {
     common.loader(true);
     await authAxios({
       method: 'POST',
-      url: `/admin/category/paginate`,
+      url: `/subcategory/paginate`,
       data: postData,
     })
       .then((res) => {
@@ -61,7 +61,7 @@ function List() {
         activePage: pageNumber || 1,
         list: [],
       });
-      navigate(`/categories/list/${pageNumber}?searchString=${searchString || ''}`);
+      navigate(`/breed/list/${pageNumber}?searchString=${searchString || ''}`);
     }
   };
 
@@ -79,12 +79,12 @@ function List() {
                   search.page = 1;
                   search.searchString = values.searchString;
                   const queryString = new URLSearchParams(search).toString();
-                  navigate(`/categories/list/${1}?` + queryString);
+                  navigate(`/breed/list/${1}?` + queryString);
                 }} />
               </div>
               <div className="right-widget ml-auto col-4">
                 <div className="float-right d-flex align-items-center">
-                  <Link to={`/categories/add`} className="btn-custom btn-theme">Add</Link>
+                  <Link to={`/breed/add`} className="btn-custom btn-theme">Add</Link>
                 </div>
               </div>
             </div>
@@ -111,16 +111,17 @@ function List() {
                           <td>
                           <ReactConfirm
                             type="switch"
-                            value={data?.isEnabled}
-                            route={`/admin/category/status/${data?._id}`}
+                            value={data?.status}
+                            route={`/subcategory/status/${data?._id}`}
                             action={() => getData()}
                             message='Are you sure you want to change the status?'
                             method="POST"
-                            payload={{ status: !data?.isEnabled }}
+                            payload={{ status: !data?.status }}
                           />
                           </td>
                           <td className='text-right'>
-                            <ReactConfirm type='delete' route={`/admin/category/delete/${data?._id}`} action={() => getData()} message='Are you sure you want to delete this category?' />
+                            <Link to={`/breed/edit/${data?._id}`} className="btn btn-sm btn-primary mr-2">Edit</Link>
+                            {/* <ReactConfirm type='delete' route={`/category/delete/${data?._id}`} action={() => getData()} message='Are you sure you want to delete this category?' /> */}
                           </td>
 
                         </tr>

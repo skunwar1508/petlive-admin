@@ -15,10 +15,21 @@ const Add = () => {
     const [isLoaded, setIsLoaded] = useState(true);
     const {id} = useParams();
     const [formConfig, setFormConfig] = useState({
-        name: "Add Lab Category",
-        redirect: "/categories/list/1",
-        postApi: `/admin/category/add`,
+        name: "Add Breed",
+        redirect: "/breed/list/1",
+        postApi: `/subcategory/create`,
         fields: [
+            {
+                type:'multiselect',
+                name: 'category',
+                label: 'Category',
+                errorMessage: 'Please select category',
+                dependency:'none',
+                route: '/category/getAll',
+                valueName: '_id',
+                labelName: 'name',
+                isMulti: false,
+            },
             {
                 type: 'text',
                 name: 'name',
@@ -38,16 +49,16 @@ const Add = () => {
     useEffect(() => {
         let pageInfo = {
             link: '/',
-            title: `Add  Lab Category`,
+            title: `Add Breed`,
         }
-        if (id == 'secondary') {
-            pageInfo.title = `Edit  Lab Category`;
+        if (id) {
+            pageInfo.title = `Edit Breed`;
             setFormConfig(prev => ({
                 ...prev,
-                name: `Edit Lab Category`,
-                getApi: `/admin/category/get/${id}`,
-                updateApi: `/admin/category/update/${id}`,
-                redirect: `/categories/list/1`,
+                name: `Edit Breed`,
+                getApi: `/subcategory/getById/${id}`,
+                updateApi: `/subcategory/update/${id}`,
+                redirect: `/breed/list/1`,
             }));
             setIsLoaded(true);
         }

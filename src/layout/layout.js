@@ -21,6 +21,13 @@ const PatientsAdd = React.lazy(() => import("../pages/patients/add"));
 const ServicesList = React.lazy(() => import("../pages/services/list"));
 const ServicesAdd = React.lazy(() => import("../pages/services/add"));
 
+const PettypeList = React.lazy(() => import("../pages/pettype/list"));
+const PettypeAdd = React.lazy(() => import("../pages/pettype/add"));
+
+const BreedList = React.lazy(() => import("../pages/breed/list"));
+const BreedAdd = React.lazy(() => import("../pages/breed/add"));
+
+
 function Layout() {
 	const context = useContext(UserContext);
 	
@@ -57,6 +64,14 @@ function Layout() {
 								<Route path="/services/list/:page" element={<ServicesList />} />
 								<Route path="/services/add" element={<ServicesAdd />} />
 								<Route path="/services/edit/:id" element={<ServicesAdd />} />
+
+								<Route path="/pettype/list/:page" element={<PettypeList />} />
+								<Route path="/pettype/add" element={<PettypeAdd />} />
+								<Route path="/pettype/edit/:id" element={<PettypeAdd />} />
+
+								<Route path="/breed/list/:page" element={<BreedList />} />
+								<Route path="/breed/add" element={<BreedAdd />} />
+								<Route path="/breed/edit/:id" element={<BreedAdd />} />
 
 								<Route path="*" element={<NotFound />} />
 							</Routes>
