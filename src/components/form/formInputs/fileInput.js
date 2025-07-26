@@ -72,6 +72,7 @@ const FileInput = memo((props) => {
     }, []);
 
     useEffect(() => {
+        console.log('Image updated successfully', value);
         // Ensure all dependencies are valid
         if (!value || !updateImage || !imageFormik || !formik || !name) return;
     

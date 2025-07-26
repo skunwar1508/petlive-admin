@@ -155,8 +155,19 @@ const FormBlock = memo(({
                     if (obj?.type === 'file' && typeof resData[name] === 'object' && resData[name] !== null) {
                         formik.setFieldValue(name, resData[name]._id);
                     } else if (obj?.type === 'array' && Array.isArray(obj?.fields)) {
-                        // Assign nested array data
-                        formik.setFieldValue(name, resData[name] || []);
+                        const arrayValues = resData[name] || [];
+                        const formattedArray = arrayValues.map(item => {
+                            let newItem = {};
+                            obj.fields.forEach(field => {
+                                if (field.type === 'file' && typeof item === 'object' && item?._id !== null) {
+                                    newItem = item?._id || '';
+                                } else {
+                                    newItem[field.name] = item[field.name] || field.value || '';
+                                }
+                            });
+                            return newItem;
+                        });
+                        formik.setFieldValue(name, formattedArray);
                     } else {
                         formik.setFieldValue(name, resData[name] || '');
                     }
@@ -166,6 +177,8 @@ const FormBlock = memo(({
             }
         }
     }, [getApi, getPathId, formType, fields]);
+
+    console.log('formik.values', formik.values);
 
     useEffect(() => {
         getForm();
@@ -318,6 +331,14 @@ const ArrayObject = memo(({ name, fields, formik, inlineForm }) => {
             formik,
             ...field
         };
+        if (field.isArray) {
+            commonProps.name = `${name}[${idx}]`;
+            commonProps.value = item[idx] || [];
+            commonProps.error = errors[idx] || [];
+            commonProps.touched = touched[idx] || [];
+        }
+        console.log('Rendering input:', field, 'at index:', idx, 'with item:', item);
+        console.log('commonProps:', commonProps);
 
         switch (field.type) {
             case 'text':
