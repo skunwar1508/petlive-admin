@@ -121,11 +121,11 @@ const Add = () => {
             {
                 type: 'number',
                 name: 'consultationFee',
-                label: 'Consultation Fee',
+                label: 'Consultation Commission (%)',
                 min: 1,
                 max: 100,
                 regex: /^(100|[1-9][0-9]?)$/,
-                errorMessage: 'Please enter consultation fee (max 100)',
+                errorMessage: 'Please enter consultation commission (max 100)',
             },
             {
                 type: 'textarea',
