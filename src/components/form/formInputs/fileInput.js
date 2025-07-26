@@ -79,6 +79,7 @@ const FileInput = memo((props) => {
         // Handle image updates
         const handleImageUpdate = async () => {
             try {
+                console.log('Updating image with value:', value);
                 if (value) {
                     await updateImage(value);
                 } else {
@@ -100,7 +101,7 @@ const FileInput = memo((props) => {
         return () => {
             // Cancel any ongoing asynchronous operations if needed
         };
-    }, [value, updateImage, name]);
+    }, [value, name]);
 
     return (
         <div className='row'>

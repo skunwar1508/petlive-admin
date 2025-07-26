@@ -101,7 +101,11 @@ const FormBlock = memo(({
                             nestedSchema[fname] = Yup.string()[freqir](fermsg).nullable();
                         }
                     });
-                    schema[name] = Yup.array().of(Yup.object().shape(nestedSchema))[reqir](ermsg);
+                    if (obj?.arrayString) {
+                        schema[name] = Yup.array().of(Yup.string())[reqir](ermsg);
+                    } else {
+                        schema[name] = Yup.array().of(Yup.object().shape(nestedSchema))[reqir](ermsg);
+                    }
                 } else if (obj?.type == 'multiselect' && obj?.isMulti) {
                     if (obj?.arrayType === 'object') {
                         getFieldValidation(obj?.fields);
@@ -156,6 +160,10 @@ const FormBlock = memo(({
                         formik.setFieldValue(name, resData[name]._id);
                     } else if (obj?.type === 'array' && Array.isArray(obj?.fields)) {
                         const arrayValues = resData[name] || [];
+                        if (obj?.arrayString && arrayValues.length == 0) {
+                            formik.setFieldValue(name, obj?.defaultValue || ['']);
+                            return;
+                        }
                         const formattedArray = arrayValues.map(item => {
                             let newItem = {};
                             obj.fields.forEach(field => {
@@ -178,7 +186,6 @@ const FormBlock = memo(({
         }
     }, [getApi, getPathId, formType, fields]);
 
-    console.log('formik.values', formik.values);
 
     useEffect(() => {
         getForm();
@@ -294,7 +301,7 @@ const FormBlock = memo(({
     );
 });
 
-const ArrayObject = memo(({ name, fields, formik, inlineForm }) => {
+const ArrayObject = memo(({ name, fields, formik, inlineForm, addMoreName }) => {
     const values = formik.values[name] || [];
     const errors = formik.errors[name] || [];
     const touched = formik.touched[name] || [];
@@ -333,12 +340,10 @@ const ArrayObject = memo(({ name, fields, formik, inlineForm }) => {
         };
         if (field.isArray) {
             commonProps.name = `${name}[${idx}]`;
-            commonProps.value = item[idx] || [];
+            commonProps.value = item || "";
             commonProps.error = errors[idx] || [];
             commonProps.touched = touched[idx] || [];
         }
-        console.log('Rendering input:', field, 'at index:', idx, 'with item:', item);
-        console.log('commonProps:', commonProps);
 
         switch (field.type) {
             case 'text':
@@ -449,25 +454,34 @@ const ArrayObject = memo(({ name, fields, formik, inlineForm }) => {
                                 {renderInput(field, idx, item)}
                             </div>
                         ))}
-                        <div className="col-lg-1 d-flex align-items-end">
-                            <button
-                                type="button"
-                                className="btn btn-danger btn-sm"
-                                onClick={() => handleRemove(idx)}
-                            >
-                                Remove
-                            </button>
+
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col-lg-3"></div>
+                        <div className="col-lg-9 d-flex align-items-end gap-2">
+                            {values?.length > 1 && (
+                                <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm"
+                                    onClick={() => handleRemove(idx)}
+                                >
+                                    Remove
+                                </button>
+                            )}
+                            {values?.length === idx+1 && (
+                                <button
+                                    type="button"
+                                    className="btn btn-primary btn-sm mt-2"
+                                    onClick={handleAdd}
+                                >
+                                    {addMoreName || 'Add Item'}
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
             ))}
-            <button
-                type="button"
-                className="btn btn-primary btn-sm mt-2"
-                onClick={handleAdd}
-            >
-                Add Item
-            </button>
+
         </div>
     );
 });

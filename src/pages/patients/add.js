@@ -49,7 +49,9 @@ const Add = () => {
                 name: 'ownerImage',
                 label: 'Owner Images',
                 errorMessage: 'Please upload owner images',
-                value: [],
+                defaultValue: [''],
+                arrayString:true,
+                addMoreName: 'Add Owner Image',
                 fields: [
                     {
                         type: 'file',
@@ -217,11 +219,14 @@ const Add = () => {
                 label: 'Pet Images',
                 errorMessage: 'Please upload pet images',
                 value: [],
+                arrayString:true,
+                addMoreName: 'Add Pet Image',
                 fields: [
                     {
                         type: 'file',
                         name: 'image',
                         label: 'Image',
+                        isArray: true,
                         errorMessage: 'Please upload image',
                         value: '',
                     }
