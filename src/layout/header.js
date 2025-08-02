@@ -29,6 +29,7 @@ function Header() {
               <Menu path="/patients/list/1"  title="User Management" icon="flowbite:users-group-solid" iconifyIcon="true" />
               <Menu path="/doctor/list/1"  title="Vet Management" icon="vaadin:doctor" iconifyIcon="true" />
               <Menu path="/services/list/1"  title="Services Management" icon="vaadin:doctor" iconifyIcon="true" />
+              <Menu path="/community/list/1" title="Community" icon="mdi:account-group" iconifyIcon="true" />
             </DropDownMenu>
             <ul>
               <li>

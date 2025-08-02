@@ -30,6 +30,9 @@ const BreedAdd = React.lazy(() => import("../pages/breed/add"));
 const PetcolorList = React.lazy(() => import("../pages/petcolor/list"));
 const PetcolorAdd = React.lazy(() => import("../pages/petcolor/add"));
 
+const CommunityList = React.lazy(() => import("../pages/community/list"));
+const CommunityAdd = React.lazy(() => import("../pages/community/add"));
+
 
 function Layout() {
 	const context = useContext(UserContext);
@@ -79,6 +82,11 @@ function Layout() {
 								<Route path="/petcolor/list/:page" element={<PetcolorList />} />
 								<Route path="/petcolor/add" element={<PetcolorAdd />} />
 								<Route path="/petcolor/edit/:id" element={<PetcolorAdd />} />
+								<Route path="/breed/edit/:id" element={<BreedAdd />} />
+
+								<Route path="/community/list/:page" element={<CommunityList />} />
+								<Route path="/community/add" element={<CommunityAdd />} />
+								<Route path="/community/edit/:id" element={<CommunityAdd />} />
 
 								<Route path="*" element={<NotFound />} />
 							</Routes>
