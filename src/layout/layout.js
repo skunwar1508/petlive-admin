@@ -27,6 +27,9 @@ const PettypeAdd = React.lazy(() => import("../pages/pettype/add"));
 const BreedList = React.lazy(() => import("../pages/breed/list"));
 const BreedAdd = React.lazy(() => import("../pages/breed/add"));
 
+const PetcolorList = React.lazy(() => import("../pages/petcolor/list"));
+const PetcolorAdd = React.lazy(() => import("../pages/petcolor/add"));
+
 
 function Layout() {
 	const context = useContext(UserContext);
@@ -72,6 +75,10 @@ function Layout() {
 								<Route path="/breed/list/:page" element={<BreedList />} />
 								<Route path="/breed/add" element={<BreedAdd />} />
 								<Route path="/breed/edit/:id" element={<BreedAdd />} />
+
+								<Route path="/petcolor/list/:page" element={<PetcolorList />} />
+								<Route path="/petcolor/add" element={<PetcolorAdd />} />
+								<Route path="/petcolor/edit/:id" element={<PetcolorAdd />} />
 
 								<Route path="*" element={<NotFound />} />
 							</Routes>
