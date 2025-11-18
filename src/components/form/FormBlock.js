@@ -41,6 +41,15 @@ const FormBlock = memo(({
                 iniValues[name] = obj?.value || null;
             } else if (obj?.type === 'array') {
                 iniValues[name] = obj?.value || [];
+            } else if (obj?.type === 'object' && Array.isArray(obj?.fields)) {
+                // build nested defaults for object type
+                const nested = {};
+                obj.fields.forEach(f => {
+                    if (f?.type === 'file') nested[f.name] = f?.value || null;
+                    else if (f?.type === 'array') nested[f.name] = f?.value || [];
+                    else nested[f.name] = f?.value || '';
+                });
+                iniValues[name] = obj?.value || nested;
             } else {
                 iniValues[name] = obj?.value || '';
             }
@@ -106,6 +115,50 @@ const FormBlock = memo(({
                     } else {
                         schema[name] = Yup.array().of(Yup.object().shape(nestedSchema))[reqir](ermsg);
                     }
+                } else if (obj?.type === 'object' && Array.isArray(obj?.fields)) {
+                    // Nested object validation
+                    const nestedSchema = {};
+                    obj.fields.forEach((field) => {
+                        const fname = field?.name;
+                        const freqir = field?.required === false ? 'notRequired' : 'required';
+                        const fermsg = field?.errorMessage || 'Required';
+                        if (field?.regex) {
+                            nestedSchema[fname] = Yup.string().matches(field?.regex, fermsg || 'Invalid')[freqir](fermsg);
+                        } else if (field?.type === 'number' && field?.min && field?.max) {
+                            nestedSchema[fname] = Yup.number()
+                                .min(field?.min, `Please enter value greater than or equal to ${field?.min}`)
+                                .max(field?.max, `Please enter value less than or equal to ${field?.max}`)[freqir](fermsg);
+                        } else if (field?.type === 'email') {
+                            nestedSchema[fname] = Yup.string().email('Please enter a valid email')[freqir](fermsg);
+                        } else if (field?.type === 'array' && Array.isArray(field?.fields)) {
+                            // arrays inside object
+                            const innerNested = {};
+                            field.fields.forEach((ff) => {
+                                const ifname = ff?.name;
+                                const ifreqir = ff?.required === false ? 'notRequired' : 'required';
+                                const ifermsg = ff?.errorMessage || 'Required';
+                                if (ff?.regex) {
+                                    innerNested[ifname] = Yup.string().matches(ff?.regex, ifermsg || 'Invalid')[ifreqir](ifermsg);
+                                } else if (ff?.type === 'number' && ff?.min && ff?.max) {
+                                    innerNested[ifname] = Yup.number()
+                                        .min(ff?.min, `Please enter value greater than or equal to ${ff?.min}`)
+                                        .max(ff?.max, `Please enter value less than or equal to ${ff?.max}`)[ifreqir](ifermsg);
+                                } else if (ff?.type === 'email') {
+                                    innerNested[ifname] = Yup.string().email('Please enter a valid email')[ifreqir](ifermsg);
+                                } else {
+                                    innerNested[ifname] = Yup.string()[ifreqir](ifermsg).nullable();
+                                }
+                            });
+                            if (field?.arrayString) {
+                                nestedSchema[fname] = Yup.array().of(Yup.string())[freqir](fermsg);
+                            } else {
+                                nestedSchema[fname] = Yup.array().of(Yup.object().shape(innerNested))[freqir](fermsg);
+                            }
+                        } else {
+                            nestedSchema[fname] = Yup.string()[freqir](fermsg).nullable();
+                        }
+                    });
+                    schema[name] = Yup.object().shape(nestedSchema)[reqir](ermsg);
                 } else if (obj?.type == 'multiselect' && obj?.isMulti) {
                     if (obj?.arrayType === 'object') {
                         getFieldValidation(obj?.fields);
@@ -176,6 +229,20 @@ const FormBlock = memo(({
                             return newItem;
                         });
                         formik.setFieldValue(name, formattedArray);
+                    } else if (obj?.type === 'object' && Array.isArray(obj?.fields)) {
+                        const objValue = resData[name] || {};
+                        const formatted = {};
+                        obj.fields.forEach(field => {
+                            if (field.type === 'file' && typeof objValue[field.name] === 'object' && objValue[field.name] !== null) {
+                                formatted[field.name] = objValue[field.name]._id || '';
+                            } else if (field.type === 'array' && Array.isArray(field.fields)) {
+                                // keep array as is or default mapping
+                                formatted[field.name] = objValue[field.name] || [];
+                            } else {
+                                formatted[field.name] = objValue[field.name] || field.value || '';
+                            }
+                        });
+                        formik.setFieldValue(name, formatted);
                     } else {
                         formik.setFieldValue(name, resData[name] || '');
                     }
@@ -235,6 +302,7 @@ const FormBlock = memo(({
             common.loader(false);
         }
     };
+    console.log(formik)
 
     return (
         <form onSubmit={formik.handleSubmit} className='login_form'>
@@ -265,6 +333,14 @@ const FormBlock = memo(({
                                                 <ArrayObject
                                                     {...formik.getFieldProps(d?.name)}
                                                     {...d}
+                                                    formik={formik}
+                                                    inlineForm={inlineForm}
+                                                />
+                                            )}
+                                            {d?.type === 'object' && Array.isArray(d?.fields) && (
+                                                <ObjectBlock
+                                                    {...d}
+                                                    {...formik.getFieldProps(d?.name)}
                                                     formik={formik}
                                                     inlineForm={inlineForm}
                                                 />
@@ -326,7 +402,7 @@ const ArrayObject = memo(({ name, fields, formik, inlineForm, addMoreName }) => 
         formik.setFieldValue(name, updated);
     };
 
-    // Helper to render input based on type, supports nested arrays
+    // Helper to render input based on type, supports nested arrays and objects
     const renderInput = (field, idx, item) => {
         const inputName = `${name}[${idx}].${field.name}`;
         const commonProps = {
@@ -414,7 +490,7 @@ const ArrayObject = memo(({ name, fields, formik, inlineForm, addMoreName }) => 
                     />
                 );
             case 'array':
-                // Nested array support
+                // Nested array support inside array items
                 return (
                     <ArrayObject
                         name={`${name}[${idx}].${field.name}`}
@@ -424,6 +500,27 @@ const ArrayObject = memo(({ name, fields, formik, inlineForm, addMoreName }) => 
                             values: { [field.name]: item[field.name] || [] },
                             errors: { [field.name]: errors[idx]?.[field.name] || [] },
                             touched: { [field.name]: touched[idx]?.[field.name] || [] },
+                            setFieldValue: (fieldKey, val) => {
+                                const updated = values.map((itm, i) =>
+                                    i === idx ? { ...itm, [field.name]: val } : itm
+                                );
+                                formik.setFieldValue(name, updated);
+                            }
+                        }}
+                        inlineForm={inlineForm}
+                    />
+                );
+            case 'object':
+                // Nested object support inside array items
+                return (
+                    <ObjectBlock
+                        name={`${name}[${idx}].${field.name}`}
+                        fields={field.fields}
+                        formik={{
+                            ...formik,
+                            values: { [field.name]: item[field.name] || {} },
+                            errors: { [field.name]: errors[idx]?.[field.name] || {} },
+                            touched: { [field.name]: touched[idx]?.[field.name] || {} },
                             setFieldValue: (fieldKey, val) => {
                                 const updated = values.map((itm, i) =>
                                     i === idx ? { ...itm, [field.name]: val } : itm
@@ -468,7 +565,7 @@ const ArrayObject = memo(({ name, fields, formik, inlineForm, addMoreName }) => 
                                     Remove
                                 </button>
                             )}
-                            {values?.length === idx+1 && (
+                            {values?.length === idx + 1 && (
                                 <button
                                     type="button"
                                     className="btn btn-primary btn-sm mt-2"
@@ -485,6 +582,157 @@ const ArrayObject = memo(({ name, fields, formik, inlineForm, addMoreName }) => 
         </div>
     );
 });
+
+const ObjectBlock = memo(({ name, fields, formik, inlineForm }) => {
+    const values = formik.values[name] || {};
+    const errors = formik.errors[name] || {};
+    const touched = formik.touched[name] || {};
+
+    const handleChange = (fieldName, value) => {
+        const updated = { ...values, [fieldName]: value };
+        formik.setFieldValue(name, updated);
+    };
+
+    const renderInput = (field) => {
+        const inputName = `${name}.${field.name}`;
+        const commonProps = {
+            ...field,
+            name: inputName,
+            value: values[field.name],
+            error: errors[field.name],
+            touched: touched[field.name],
+            inlineForm,
+            formik
+        };
+        
+
+        switch (field.type) {
+            case 'text':
+            case 'password':
+            case 'email':
+            case 'number':
+                return (
+                    <TextInput
+                        {...commonProps}
+                        type={field.type}
+                        onChange={e => handleChange(field.name, e.target.value)}
+                    />
+                );
+            case 'file':
+                return (
+                    <FileInput
+                        {...commonProps}
+                        onChange={e => handleChange(field.name, e.target.files?.[0])}
+                    />
+                );
+            case 'select':
+                return (
+                    <SelectInput
+                        {...commonProps}
+                        onChange={e => handleChange(field.name, e.target.value)}
+                    />
+                );
+            case 'multiselect':
+                return (
+                    <MultiSelectInput
+                        {...commonProps}
+                        onChange={val => handleChange(field.name, val)}
+                    />
+                );
+            case 'textarea':
+                return (
+                    <TextArea
+                        {...commonProps}
+                        onChange={e => handleChange(field.name, e.target.value)}
+                    />
+                );
+            case 'radio':
+                return (
+                    <RadioForm
+                        {...commonProps}
+                        onChange={e => handleChange(field.name, e.target.value)}
+                    />
+                );
+            case 'checkbox':
+                return (
+                    <CheckBoxForm
+                        {...commonProps}
+                        onChange={e => handleChange(field.name, e.target.checked)}
+                    />
+                );
+            case 'editor':
+                return (
+                    <TextAreaEditor
+                        {...commonProps}
+                        onChange={val => handleChange(field.name, val)}
+                    />
+                );
+            case 'datepicker':
+                return (
+                    <DatePickerInput
+                        {...commonProps}
+                        onChange={val => handleChange(field.name, val)}
+                    />
+                );
+            case 'array':
+                return (
+                    <ArrayObject
+                        name={`${name}.${field.name}`}
+                        fields={field.fields}
+                        formik={{
+                            ...formik,
+                            values: { [field.name]: values[field.name] || [] },
+                            errors: { [field.name]: errors[field.name] || [] },
+                            touched: { [field.name]: touched[field.name] || [] },
+                            setFieldValue: (fieldKey, val) => {
+                                const updated = { ...values, [field.name]: val };
+                                formik.setFieldValue(name, updated);
+                            }
+                        }}
+                        inlineForm={inlineForm}
+                    />
+                );
+            case 'object':
+                return (
+                    <ObjectBlock
+                        name={`${name}.${field.name}`}
+                        fields={field.fields}
+                        formik={{
+                            ...formik,
+                            values: { [field.name]: values[field.name] || {} },
+                            errors: { [field.name]: errors[field.name] || {} },
+                            touched: { [field.name]: touched[field.name] || {} },
+                            setFieldValue: (fieldKey, val) => {
+                                const updated = { ...values, [field.name]: val };
+                                formik.setFieldValue(name, updated);
+                            }
+                        }}
+                        inlineForm={inlineForm}
+                    />
+                );
+            default:
+                return (
+                    <TextInput
+                        {...commonProps}
+                        onChange={e => handleChange(field.name, e.target.value)}
+                    />
+                );
+        }
+    };
+
+    return (
+        <div className="object-block">
+            <div className="row">
+                {fields.map((field, fidx) => (
+                    <div className={`col-lg-${field.col || 12}`} key={fidx}>
+                        {renderInput(field)}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+});
+
 FormBlock.propTypes = {
     /** Name of the form */
     name: PropTypes.string,

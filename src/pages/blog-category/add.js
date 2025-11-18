@@ -15,70 +15,21 @@ const Add = () => {
     const [isLoaded, setIsLoaded] = useState(true);
     const {id} = useParams();
     const [formConfig, setFormConfig] = useState({
-        name: "Create Blog",
-        redirect: "/blog/list/1",
-        postApi: `/blog/create`,
+        name: "Add Blog Category",
+        redirect: "/blog/category/list/1",
+        postApi: `/blog/category/create`,
         fields: [
             {
                 type: 'text',
-                name: 'title',
-                label: 'Title',
-                errorMessage: 'Please enter title',
+                name: 'name',
+                label: 'Name',
+                errorMessage: 'Please enter name',
             },
             {
-                type: 'multiselect',
-                name: 'categoryId',
-                isMulti: false,
-                dependency: 'none',
-                labelName: 'name',
-                valueName: '_id',
-                endpoint: 'data',
-                route: '/blog/category',
-                errorMessage: 'Please select category',
-                placeholder: 'Select category',
-                value: []
-            },
-            {
-                type: 'file',
-                name: 'coverImage',
-                label: 'Image',
-                errorMessage: 'Please choose image',
-            },
-            {
-                type: 'editor',
-                name: 'content',
-                label: 'Content',
-                errorMessage: 'Please enter content',
-            },
-            {
-                type: 'select',
-                name: 'published',
-                label: 'Published',
-                options: [
-                    { value: true, label: 'Published' },
-                    { value: false, label: 'Draft' },
-                ],
-                errorMessage: 'Please select status',
-            },
-            {
-                type: 'select',
-                name: 'isActive',
-                label: 'Status',
-                options: [
-                    { value: true, label: 'Active' },
-                    { value: false, label: 'Inactive' },
-                ],
-                errorMessage: 'Please select status',
-            },
-            {
-                type: 'select',
-                name: 'isFeatured',
-                label: 'Featured (on homepage)',
-                options: [
-                    { value: true, label: 'Yes' },
-                    { value: false, label: 'No' },
-                ],
-                errorMessage: 'Please select status',
+                type: 'textarea',
+                name: 'description',
+                label: 'Description',
+                errorMessage: 'Please enter description',
             },
             {
                 type:'object',
@@ -109,20 +60,19 @@ const Add = () => {
         ],
     });
 
-
     useEffect(() => {
         let pageInfo = {
             link: '/',
-            title: `Create Blog`,
+            title: `Add Blog Category`,
         }
         if (id) {
-            pageInfo.title = `Edit Blog`;
+            pageInfo.title = `Edit Blog Category`;
             setFormConfig(prev => ({
                 ...prev,
-                name: `Edit Blog`,
-                getApi: `/blog/get/${id}`,
-                updateApi: `/blog/update/${id}`,
-                redirect: `/blog/list/1`,
+                name: `Edit Blog Category`,
+                getApi: `/blog/category/get/${id}`,
+                updateApi: `/blog/category/update/${id}`,
+                redirect: `/blog/category/list/1`,
             }));
             setIsLoaded(true);
         }
