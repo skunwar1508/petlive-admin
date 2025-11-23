@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
     const navigate = useNavigate();
     const [auth, setAuth] = useState(false);
     const [Theme, setTheme] = useState("theme-1");
-    const [ThemeColor, setThemeColor] = useState("theme-color-1");
+    const [ThemeColor, setThemeColor] = useState("theme-color-11");
     const [MiniSidebar, setMiniSidebar] = useState("");
     const [userInfo, setUserInfo] = useState({});
     const [breadcrumbs, setBreadcrumbs] = useState({});

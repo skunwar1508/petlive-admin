@@ -62,7 +62,7 @@ const LoginForm = () => {
             <ToastContainer />
             <div className="wrapLogin__form">
                 <div className='centerWidgetLogo'>
-                    <img src={`/assets/images/logo.png`} alt="Logo" />
+                    <img src={`/furr_baby_logo.svg`} alt="Logo" />
                 </div>
                 <div className='Login__box_wrap loginWrp'>
 
