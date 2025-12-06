@@ -33,6 +33,9 @@ function Header() {
               {/* <Menu path="/community/add" title="Add Community" icon="mdi:account-group" iconifyIcon="true" /> */}
               <Menu path="/blog/category/list/1" title="Blog Category" icon="mdi:category" iconifyIcon="true" />
               <Menu path="/blog/list/1" title="Blog" icon="mdi:account-group" iconifyIcon="true" />
+
+              <Menu path="/contacts/list/1" title="Contacts" icon="mdi:contacts" iconifyIcon="true" />
+              <Menu path="/inquiry/list/1" title="Inquiry" icon="mdi:email" iconifyIcon="true" />
             </DropDownMenu>
             <ul>
               <li>

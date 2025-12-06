@@ -39,6 +39,8 @@ const BlogAdd = React.lazy(() => import("../pages/blog/add"));
 const BlogCategoryList = React.lazy(() => import("../pages/blog-category/list"));
 const BlogCategoryAdd = React.lazy(() => import("../pages/blog-category/add"));
 
+const ContactList = React.lazy(() => import("../pages/contact-us/list"));
+const InquiryList = React.lazy(() => import("../pages/inquiry/list"));
 
 function Layout() {
 	const context = useContext(UserContext);
@@ -101,6 +103,9 @@ function Layout() {
 								<Route path="/blog/category/list/:page" element={<BlogCategoryList />} />
 								<Route path="/blog/category/add" element={<BlogCategoryAdd />} />
 								<Route path="/blog/category/edit/:id" element={<BlogCategoryAdd />} />
+								
+								<Route path="/contacts/list/:page" element={<ContactList />} />
+								<Route path="/inquiry/list/:page" element={<InquiryList />} />
 
 								<Route path="*" element={<NotFound />} />
 							</Routes>

@@ -34,14 +34,14 @@ function List() {
     common.loader(true);
     await authAxios({
       method: 'POST',
-      url: `/contact/paginate`,
+      url: `/inquiry/paginate`,
       data: postData,
     })
       .then((res) => {
         setPaginData({
           ...paginData,
           activePage: page,
-          list: res?.data?.data?.contacts || [],
+          list: res?.data?.data?.inquiries || [],
           totalItemsCount: res?.data?.data?.total,
         });
       })
@@ -62,7 +62,7 @@ function List() {
         activePage: pageNumber || 1,
         list: [],
       });
-      navigate(`/contacts/list/${pageNumber}?searchString=${searchString || ''}`);
+      navigate(`/inquiry/list/${pageNumber}?searchString=${searchString || ''}`);
     }
   };
 
@@ -80,7 +80,7 @@ function List() {
                   search.page = 1;
                   search.searchString = values.searchString;
                   const queryString = new URLSearchParams(search).toString();
-                  navigate(`/contacts/list/${1}?` + queryString);
+                  navigate(`/inquiry/list/${1}?` + queryString);
                 }} />
               </div>
               <div className="right-widget ml-auto col-4">
@@ -95,9 +95,11 @@ function List() {
                   <thead>
                     <tr>
                       <th>S. No.</th>
+                      <th>Pet Type</th>
+                      <th>Name</th>
                       <th>Email</th>
                       <th>Phone</th>
-                      <th>Message</th>
+                      <th>Issue</th>
                       <th>Date</th>
                     </tr>
                   </thead>
@@ -108,9 +110,11 @@ function List() {
                           <td>
                             {(Number(page) == 1 ? 0 : (Number(page) - 1) * paginData.itemsCountPerPage) + key + 1}
                           </td>
+                          <td>{data?.petType}</td>
+                          <td>{data?.name}</td>
                           <td>{data?.email}</td>
                           <td>{data?.phone}</td>
-                          <td><ViewMore data={data?.message} /></td>
+                          <td><ViewMore data={data?.issue} /></td>
                           <td><DateFormate>{data?.createdAt}</DateFormate></td>
                         </tr>
                       </React.Fragment>
